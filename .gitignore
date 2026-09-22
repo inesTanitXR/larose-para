@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+ref/catalog-raw/
+ref/cand/
+ref/cand2/
+ref/*.html
+.DS_Store
