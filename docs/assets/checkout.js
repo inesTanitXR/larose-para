@@ -1,6 +1,6 @@
 /* Finalisation de commande : validation, enregistrement (e-mail), confirmation. */
 document.addEventListener('DOMContentLoaded', function () {
-  var CFG = {"fee": 8.0, "free": 150.0, "wa": "21623979204", "mail": "inessaid88@gmail.com", "cc": "fatmazangar95@gmail.com", "days": "24 à 72 h", "samples": 250.0, "city": "Nabeul", "addr": "Avenue Hédi Nouira"}, R = window.LR_ROOT || '';
+  var CFG = {"fee": 8.0, "free": 150.0, "wa": "21623979204", "mail": "inessaid88@gmail.com", "cc": "fatmazangar95@gmail.com", "days": "24 à 72 h", "samples": 250.0, "worker": "", "city": "Nabeul", "addr": "Avenue Hédi Nouira"}, R = window.LR_ROOT || '';
   var $ = function (id) { return document.getElementById(id); };
   var form = $('order'), lines = $('cart-lines'), sum = $('sum'), empty = $('cart-empty');
   var money = function (n) { return window.LRmoney(n); };
@@ -111,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var btn = $('confirm-btn'); btn.disabled = true; btn.textContent = 'Enregistrement…'; $('send-err').style.display = 'none';
     var num = orderNumber(), txt = orderText(num), t = totals(), L = window.LRloyal;
     send(num, txt).then(function () {
+      if (CFG.worker) fetch(CFG.worker + '/order', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tel: $('tel').value.trim(), name: $('prenom').value.trim(), amount: t.st, num: num,
+          redeem: !!t.red, referral: $('parrain').value.trim() }) }).catch(function () {});
       var s = L.get(); s.tel = $('tel').value.trim(); s.name = $('prenom').value.trim() || s.name; L.set(s);
       var first = s.orders === 0, pr = $('parrain').value.trim();
       if (t.red) L.redeem();

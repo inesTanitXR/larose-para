@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caisse | La Rose Parapharmacie</title>
+<meta name="description" content="Saisie boutique Carte Rose.">
+<meta property="og:title" content="Caisse | La Rose Parapharmacie">
+<meta property="og:description" content="Saisie boutique Carte Rose.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_TN">
+<meta property="og:image" content="images/site/hero.jpg">
+<meta name="theme-color" content="#f2849d">
+<link rel="icon" href="images/site/favicon.png">
+<link rel="apple-touch-icon" href="images/site/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=a8520843">
+<script>window.LR_ROOT="";window.LR_CUR="DT";window.LR_WORKER="";</script>
+<meta name="robots" content="noindex,nofollow">
+</head>
+<body><div style="padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center"><img src="images/site/logo.png" alt="La Rose" style="height:40px"></div>
+<div class="caisse">
+ <div class="scr on" id="scr-pin">
+  <h1>Caisse La Rose</h1><p class="sub">Entrez votre code pour ouvrir la caisse.</p>
+  <div class="bigin" id="pin-dots" style="letter-spacing:.3em">○○○○</div>
+  <div class="pad" id="pad"><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k="del">⌫</button><button type="button" data-k="0">0</button><span></span></div>
+  <p class="err" id="pin-err"></p>
+ </div>
+
+ <div class="scr" id="scr-entry">
+  <h1>Nouvel achat</h1><p class="sub">Le numéro de téléphone de la cliente, puis le montant.</p>
+  <span class="lbl">Téléphone de la cliente</span>
+  <input class="bigin" id="c-tel" type="tel" inputmode="numeric" maxlength="12" placeholder="20 123 456" autocomplete="off">
+  <div class="cust" id="cust" style="display:none">
+    <div class="mini" id="cust-rose"></div>
+    <div><b id="cust-name"></b><small id="cust-pts"></small><br><span class="bon" id="cust-bon"></span></div>
+  </div>
+  <div id="c-name-wrap" style="display:none"><span class="lbl">Prénom (facultatif)</span>
+    <input class="bigin" id="c-name" placeholder="Prénom" style="font-size:24px"></div>
+  <span class="lbl">Montant de l'achat (DT)</span>
+  <input class="bigin" id="c-amt" type="text" inputmode="decimal" placeholder="ex. 85">
+  <label class="toggle" id="redeem-t" style="display:none"><input type="checkbox" id="redeem"> Elle utilise son bon de 15 DT aujourd'hui</label>
+  <p class="err" id="entry-err"></p>
+  <button class="bigbtn" id="save">✓ Enregistrer</button>
+  <div class="recent"><h3>Aujourd'hui</h3><div id="recent"></div></div>
+  <p class="center" style="margin-top:30px"><button id="logout" class="muted" style="font-size:13px;text-decoration:underline">Fermer la caisse</button></p>
+ </div>
+
+ <div class="scr" id="scr-done">
+  <div class="done">
+   <div class="chk">✓</div>
+   <div class="n" id="done-n">+0</div><div class="lbl" style="text-align:center">pétales</div>
+   <div class="mini" id="done-rose" style="width:150px;height:150px;margin:14px auto"></div>
+   <p id="done-t" style="font-size:17px"></p>
+   <p id="done-first" style="display:none;margin-top:8px;color:var(--rose-ink)">🎁 Première visite : pensez au cadeau de bienvenue !</p>
+  </div>
+  <button class="bigbtn green" id="again">Cliente suivante</button>
+ </div>
+</div>
+<script src="assets/caisse.js?v=a8520843" defer></script><script src="assets/site.js?v=a8520843" defer></script></body></html>

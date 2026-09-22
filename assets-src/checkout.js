@@ -111,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var btn = $('confirm-btn'); btn.disabled = true; btn.textContent = 'Enregistrement…'; $('send-err').style.display = 'none';
     var num = orderNumber(), txt = orderText(num), t = totals(), L = window.LRloyal;
     send(num, txt).then(function () {
+      if (CFG.worker) fetch(CFG.worker + '/order', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tel: $('tel').value.trim(), name: $('prenom').value.trim(), amount: t.st, num: num,
+          redeem: !!t.red, referral: $('parrain').value.trim() }) }).catch(function () {});
       var s = L.get(); s.tel = $('tel').value.trim(); s.name = $('prenom').value.trim() || s.name; L.set(s);
       var first = s.orders === 0, pr = $('parrain').value.trim();
       if (t.red) L.redeem();

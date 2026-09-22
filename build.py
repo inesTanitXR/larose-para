@@ -133,7 +133,7 @@ def head(title, desc, root, extra="", og_image="images/site/hero.jpg", canonical
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{root}assets/style.css?v={V}">
-<script>window.LR_ROOT="{root}";window.LR_CUR="{C.CURRENCY}";</script>
+<script>window.LR_ROOT="{root}";window.LR_CUR="{C.CURRENCY}";window.LR_WORKER="{C.WORKER_URL}";</script>
 {extra}
 </head>
 <body>"""
@@ -944,7 +944,8 @@ def build_loyalty():
    <div class="pbar"><i data-rose-bar style="width:0%"></i></div>
    <div class="next">Encore <b data-rose-next>250</b> pétales avant votre prochain bon de {money(C.LOYALTY_BON)} · <b data-rose-bons>0</b> bon(s) disponible(s) · <b data-rose-orders>0</b> commande(s)</div>
    <div class="code">Mon code parrainage : <span data-rose-code>—</span> <button type="button" id="copycode">copier</button></div>
-   <p class="muted" style="font-size:12.5px;margin-top:12px">Votre carte se remplit automatiquement à chaque commande passée depuis cet appareil. Le solde de référence est celui de la parapharmacie — il vous suffit de donner votre numéro de téléphone en boutique.</p>
+   <form class="lookup" id="lookup"><input id="lk-tel" type="tel" inputmode="numeric" placeholder="Mon numéro de téléphone" aria-label="Téléphone"><button class="btn btn-rose btn-sm" type="submit">Voir mes pétales</button></form>
+   <p class="muted" id="lk-msg" style="font-size:12.5px;margin-top:10px">Votre numéro de téléphone est votre Carte Rose — en ligne comme en boutique.</p>
   </div>
  </div>
 </div></section>
@@ -969,6 +970,16 @@ def build_loyalty():
 document.addEventListener('DOMContentLoaded',function(){{
   document.getElementById('page-rose').innerHTML=window.LRroseSVG('pr');document.getElementById('pr').setAttribute('data-rose','');
   window.LRloyalRepaint();
+  var lk=document.getElementById('lookup');
+  lk.addEventListener('submit',function(e){{
+    e.preventDefault(); var t=document.getElementById('lk-tel').value.replace(/\\D/g,'').slice(-8), m=document.getElementById('lk-msg');
+    if(t.length!==8){{m.textContent='Numéro à 8 chiffres.';return;}}
+    if(!window.LR_WORKER){{var s=window.LRloyal.get();s.tel=t;window.LRloyal.set(s);m.textContent='Carte activée sur cet appareil.';return;}}
+    fetch(window.LR_WORKER+'/balance?tel='+t).then(function(r){{return r.json();}}).then(function(c){{
+      var s=window.LRloyal.get(); s.tel=t; s.petals=c.petals; s.orders=c.orders; if(c.name)s.name=c.name; window.LRloyal.set(s);
+      m.textContent=c.orders||c.petals?'Solde à jour ✓':'Bienvenue ! Votre rose s\'ouvrira dès votre premier achat.';
+    }}).catch(function(){{m.textContent='Connexion impossible, réessayez.';}});
+  }});
   document.getElementById('copycode').addEventListener('click',function(){{
     var c=window.LRloyal.code(window.LRloyal.get().tel); if(!c){{alert('Votre code apparaît après votre première commande.');return;}}
     if(navigator.clipboard)navigator.clipboard.writeText(c);this.textContent='copié ✓';
@@ -976,6 +987,56 @@ document.addEventListener('DOMContentLoaded',function(){{
 }});
 </script>"""
     page("carte-rose.html", "Carte Rose — fidélité", f"Programme de fidélité La Rose Parapharmacie : 1 dinar = 1 pétale, un bon de {money(C.LOYALTY_BON)} tous les 250 pétales, cadeau de bienvenue, anniversaire et parrainage.", body, active="rose")
+
+
+
+def build_caisse():
+    pad = "".join(f'<button type="button" data-k="{k}">{k}</button>' for k in "123456789") + '<button type="button" data-k="del">⌫</button><button type="button" data-k="0">0</button><span></span>'
+    body = f"""
+<div class="caisse">
+ <div class="scr on" id="scr-pin">
+  <h1>Caisse La Rose</h1><p class="sub">Entrez votre code pour ouvrir la caisse.</p>
+  <div class="bigin" id="pin-dots" style="letter-spacing:.3em">○○○○</div>
+  <div class="pad" id="pad">{pad}</div>
+  <p class="err" id="pin-err"></p>
+ </div>
+
+ <div class="scr" id="scr-entry">
+  <h1>Nouvel achat</h1><p class="sub">Le numéro de téléphone de la cliente, puis le montant.</p>
+  <span class="lbl">Téléphone de la cliente</span>
+  <input class="bigin" id="c-tel" type="tel" inputmode="numeric" maxlength="12" placeholder="20 123 456" autocomplete="off">
+  <div class="cust" id="cust" style="display:none">
+    <div class="mini" id="cust-rose"></div>
+    <div><b id="cust-name"></b><small id="cust-pts"></small><br><span class="bon" id="cust-bon"></span></div>
+  </div>
+  <div id="c-name-wrap" style="display:none"><span class="lbl">Prénom (facultatif)</span>
+    <input class="bigin" id="c-name" placeholder="Prénom" style="font-size:24px"></div>
+  <span class="lbl">Montant de l'achat (DT)</span>
+  <input class="bigin" id="c-amt" type="text" inputmode="decimal" placeholder="ex. 85">
+  <label class="toggle" id="redeem-t" style="display:none"><input type="checkbox" id="redeem"> Elle utilise son bon de {money(C.LOYALTY_BON)} aujourd'hui</label>
+  <p class="err" id="entry-err"></p>
+  <button class="bigbtn" id="save">✓ Enregistrer</button>
+  <div class="recent"><h3>Aujourd'hui</h3><div id="recent"></div></div>
+  <p class="center" style="margin-top:30px"><button id="logout" class="muted" style="font-size:13px;text-decoration:underline">Fermer la caisse</button></p>
+ </div>
+
+ <div class="scr" id="scr-done">
+  <div class="done">
+   <div class="chk">✓</div>
+   <div class="n" id="done-n">+0</div><div class="lbl" style="text-align:center">pétales</div>
+   <div class="mini" id="done-rose" style="width:150px;height:150px;margin:14px auto"></div>
+   <p id="done-t" style="font-size:17px"></p>
+   <p id="done-first" style="display:none;margin-top:8px;color:var(--rose-ink)">🎁 Première visite : pensez au cadeau de bienvenue !</p>
+  </div>
+  <button class="bigbtn green" id="again">Cliente suivante</button>
+ </div>
+</div>
+<script src="assets/caisse.js?v={V}" defer></script>"""
+    out = os.path.join(DOCS, "caisse.html")
+    doc = head("Caisse", "Saisie boutique Carte Rose.", "", '<meta name="robots" content="noindex,nofollow">') + \
+        f'<div style="padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center"><img src="images/site/logo.png" alt="La Rose" style="height:40px"></div>' + \
+        body + f'<script src="assets/site.js?v={V}" defer></script></body></html>'
+    open(out, "w", encoding="utf-8").write(doc)
 
 
 def build_data():
@@ -1007,7 +1068,8 @@ def copy_assets():
     for f in ("style.css", "site.js"):
         shutil.copy2(os.path.join(HERE, "assets-src", f), os.path.join(DOCS, "assets", f))
     cfg = json.dumps({"fee": C.DELIVERY_FEE, "free": C.FREE_DELIVERY_FROM, "wa": C.WHATSAPP, "mail": C.EMAIL,
-                      "cc": C.EMAIL_CC, "days": C.DELIVERY_DAYS, "samples": C.SAMPLES_FROM, "city": C.CITY, "addr": C.ADDRESS}, ensure_ascii=False)
+                      "cc": C.EMAIL_CC, "days": C.DELIVERY_DAYS, "samples": C.SAMPLES_FROM, "worker": C.WORKER_URL, "city": C.CITY, "addr": C.ADDRESS}, ensure_ascii=False)
+    shutil.copy2(os.path.join(HERE, "assets-src", "caisse.js"), os.path.join(DOCS, "assets", "caisse.js"))
     js = open(os.path.join(HERE, "assets-src", "checkout.js"), encoding="utf-8").read().replace("__CFG__", cfg)
     open(os.path.join(DOCS, "assets", "checkout.js"), "w", encoding="utf-8").write(js)
     for sub in ("site", "products"):
@@ -1038,6 +1100,7 @@ def main():
     build_cart()
     build_static()
     build_loyalty()
+    build_caisse()
     build_data()
     if not FAST:
         build_products()

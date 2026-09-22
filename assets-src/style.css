@@ -450,11 +450,11 @@ footer.site a:hover{color:var(--rose)}
 .rosecard .bloom{width:230px;height:230px;margin:0 auto;flex:0 0 auto}
 .rosecard .bloom>div,.rosecard .bloom svg{width:230px;height:230px;display:block}
 .rosecard .bloom svg{width:100%;height:100%;overflow:visible}
-.bloom .pt{fill:#f7d9d6;stroke:#f2b7c0;stroke-width:1.2;transition:fill .6s}
-.bloom .pt.on{fill:var(--rose)}
-.bloom .pt.on.deep{fill:var(--rose-deep)}
-.bloom .core{fill:#fff;stroke:var(--rose-deep);stroke-width:1.4}
-.bloom .leaf{fill:#bfd8c2;stroke:#8fb896;stroke-width:1}
+svg .pt{fill:#f7d9d6;stroke:#f2b7c0;stroke-width:1.2;transition:fill .6s}
+svg .pt.on{fill:var(--rose)}
+svg .pt.on.deep{fill:var(--rose-deep)}
+svg .core{fill:#fff;stroke:var(--rose-deep);stroke-width:1.4}
+svg .leaf{fill:#bfd8c2;stroke:#8fb896;stroke-width:1}
 .rosecard h3{font-size:26px;margin-bottom:6px}
 .rosecard .stage{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-ink);font-weight:500}
 .rosecard .big{font-family:var(--display);font-size:46px;line-height:1;margin:10px 0 4px}
@@ -492,3 +492,40 @@ footer.site a:hover{color:var(--rose)}
 .samples{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--petal);font-size:13px;color:var(--ink-soft)}
 .samples.got{background:#e6f6ec;color:#1f6b3a}
 .samples .pbar{margin:8px 0 0;height:6px}
+
+/* ---- Caisse (saisie boutique) ---- */
+.caisse{max-width:520px;margin:0 auto;padding:30px 18px 80px}
+.caisse .scr{display:none}.caisse .scr.on{display:block}
+.caisse h1{font-size:30px;margin-bottom:6px}
+.caisse .sub{color:var(--gray);margin-bottom:26px;font-size:15px}
+.bigin{width:100%;font-size:34px;font-family:var(--display);padding:16px 20px;border:2px solid var(--line);border-radius:18px;
+  text-align:center;letter-spacing:.06em;outline:none;background:#fff;margin-bottom:14px}
+.bigin:focus{border-color:var(--rose);box-shadow:0 0 0 4px var(--petal)}
+.bigin::placeholder{color:#d9cfd1;letter-spacing:0;font-size:22px;font-family:var(--sans)}
+.lbl{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--rose-ink);font-weight:500;margin:6px 0 8px;display:block}
+.bigbtn{width:100%;padding:22px;border-radius:18px;font-size:19px;font-weight:500;background:var(--rose);color:#fff;transition:.2s;
+  display:flex;align-items:center;justify-content:center;gap:10px}
+.bigbtn:hover{background:var(--rose-deep)}.bigbtn[disabled]{opacity:.4}
+.bigbtn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}
+.bigbtn.green{background:#2e9e5b}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.pad button{font-size:28px;padding:18px;border-radius:16px;background:#fff;border:1px solid var(--line);font-family:var(--display)}
+.pad button:active{background:var(--petal)}
+.cust{display:flex;gap:16px;align-items:center;background:var(--petal);border:1px solid var(--blush);border-radius:20px;padding:16px 18px;margin:6px 0 18px}
+.cust .mini{width:74px;height:74px;flex:0 0 auto}
+.cust b{font-family:var(--display);font-size:22px;font-weight:500;display:block}
+.cust small{color:var(--ink-soft);font-size:14px}
+.cust .bon{display:inline-block;margin-top:6px;background:#fff;border:1px dashed var(--rose);border-radius:100px;padding:4px 12px;font-size:13px;color:var(--rose-ink)}
+.toggle{display:flex;align-items:center;gap:12px;padding:16px;border:2px solid var(--line);border-radius:16px;margin-bottom:14px;cursor:pointer;font-size:16px}
+.toggle.on{border-color:#2e9e5b;background:#e6f6ec}
+.toggle input{width:22px;height:22px;accent-color:#2e9e5b}
+.done{text-align:center;padding:30px 0}
+.done .chk{width:90px;height:90px;border-radius:50%;background:#e6f6ec;display:grid;place-items:center;margin:0 auto 18px;font-size:44px;color:#2e9e5b}
+.done .n{font-family:var(--display);font-size:52px;line-height:1;color:var(--rose-ink)}
+.recent{margin-top:34px}
+.recent h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);font-family:var(--sans);font-weight:500;margin-bottom:10px}
+.recent div{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.recent span:last-child{font-weight:500;color:var(--rose-ink);white-space:nowrap}
+.err{color:#b3261e;font-size:14px;margin:8px 0;text-align:center}
+.lookup{display:flex;gap:10px;margin-top:18px}.lookup input{flex:1;font-size:18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;outline:none}
+.lookup input:focus{border-color:var(--rose)}

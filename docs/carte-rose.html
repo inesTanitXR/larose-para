@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" href="images/site/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=05468e98">
-<script>window.LR_ROOT="";window.LR_CUR="DT";</script>
+<link rel="stylesheet" href="assets/style.css?v=a8520843">
+<script>window.LR_ROOT="";window.LR_CUR="DT";window.LR_WORKER="";</script>
 
 </head>
 <body>
@@ -87,7 +87,8 @@
    <div class="pbar"><i data-rose-bar style="width:0%"></i></div>
    <div class="next">Encore <b data-rose-next>250</b> pétales avant votre prochain bon de 15 DT · <b data-rose-bons>0</b> bon(s) disponible(s) · <b data-rose-orders>0</b> commande(s)</div>
    <div class="code">Mon code parrainage : <span data-rose-code>—</span> <button type="button" id="copycode">copier</button></div>
-   <p class="muted" style="font-size:12.5px;margin-top:12px">Votre carte se remplit automatiquement à chaque commande passée depuis cet appareil. Le solde de référence est celui de la parapharmacie — il vous suffit de donner votre numéro de téléphone en boutique.</p>
+   <form class="lookup" id="lookup"><input id="lk-tel" type="tel" inputmode="numeric" placeholder="Mon numéro de téléphone" aria-label="Téléphone"><button class="btn btn-rose btn-sm" type="submit">Voir mes pétales</button></form>
+   <p class="muted" id="lk-msg" style="font-size:12.5px;margin-top:10px">Votre numéro de téléphone est votre Carte Rose — en ligne comme en boutique.</p>
   </div>
  </div>
 </div></section>
@@ -112,6 +113,16 @@
 document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('page-rose').innerHTML=window.LRroseSVG('pr');document.getElementById('pr').setAttribute('data-rose','');
   window.LRloyalRepaint();
+  var lk=document.getElementById('lookup');
+  lk.addEventListener('submit',function(e){
+    e.preventDefault(); var t=document.getElementById('lk-tel').value.replace(/\D/g,'').slice(-8), m=document.getElementById('lk-msg');
+    if(t.length!==8){m.textContent='Numéro à 8 chiffres.';return;}
+    if(!window.LR_WORKER){var s=window.LRloyal.get();s.tel=t;window.LRloyal.set(s);m.textContent='Carte activée sur cet appareil.';return;}
+    fetch(window.LR_WORKER+'/balance?tel='+t).then(function(r){return r.json();}).then(function(c){
+      var s=window.LRloyal.get(); s.tel=t; s.petals=c.petals; s.orders=c.orders; if(c.name)s.name=c.name; window.LRloyal.set(s);
+      m.textContent=c.orders||c.petals?'Solde à jour ✓':'Bienvenue ! Votre rose s'ouvrira dès votre premier achat.';
+    }).catch(function(){m.textContent='Connexion impossible, réessayez.';});
+  });
   document.getElementById('copycode').addEventListener('click',function(){
     var c=window.LRloyal.code(window.LRloyal.get().tel); if(!c){alert('Votre code apparaît après votre première commande.');return;}
     if(navigator.clipboard)navigator.clipboard.writeText(c);this.textContent='copié ✓';
@@ -150,5 +161,5 @@ document.addEventListener('DOMContentLoaded',function(){
    <span>Paiement à la livraison ou en boutique · aucun paiement en ligne</span>
  </div>
 </div></footer>
-<script src="assets/site.js?v=05468e98" defer></script>
+<script src="assets/site.js?v=a8520843" defer></script>
 </body></html>

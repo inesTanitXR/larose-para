@@ -5,3 +5,4 @@ ref/cand/
 ref/cand2/
 ref/*.html
 .DS_Store
+node_modules/
