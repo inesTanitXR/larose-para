@@ -19,7 +19,14 @@ document.addEventListener('DOMContentLoaded', function () {
     return '<div class="sumrow"><span>Sous-total (' + window.LRcart.count() + ')</span><b>' + money(t.st) + '</b></div>' +
       '<div class="sumrow"><span>Livraison</span><span>' + dl + '</span></div>' +
       (t.red ? '<div class="sumrow" style="color:var(--rose-ink)"><span>Bon Carte Rose</span><span>−' + money(t.red) + '</span></div>' : '') +
-      '<div class="sumrow total"><span>Total à régler</span><span>' + money(t.total) + '</span></div>';
+      '<div class="sumrow total"><span>Total à régler</span><span>' + money(t.total) + '</span></div>' + samplesHTML(t.st);
+  }
+  function samplesHTML(st) {
+    if (!CFG.samples || st === 0) return '';
+    if (st >= CFG.samples) return '<div class="samples got">🧴 <b>Échantillons offerts</b> — inclus dans cette commande.</div>';
+    var left = CFG.samples - st, pct = Math.min(100, st / CFG.samples * 100);
+    return '<div class="samples">🧴 Plus que <b>' + money(left) + '</b> pour des échantillons offerts (dès ' + money(CFG.samples) + ').' +
+      '<div class="pbar"><i style="width:' + pct + '%"></i></div></div>';
   }
   window.LRpaintCart = function () {
     var c = window.LRcart.read(), t = totals(), ls = window.LRloyal.get();
@@ -76,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     s += '\nSous-total : ' + money(t.st) + '\n';
     s += mode() === 'retrait' ? 'Mode : RETRAIT EN BOUTIQUE\n' : 'Livraison : ' + (t.deliv ? money(t.deliv) : 'offerte') + '\n';
     if (t.red) s += 'Bon Carte Rose : −' + money(t.red) + '\n';
+    if (CFG.samples && t.st >= CFG.samples) s += '🧴 ÉCHANTILLONS OFFERTS (commande ≥ ' + money(CFG.samples) + ')\n';
     s += 'TOTAL À RÉGLER : ' + money(t.total) + ' (paiement à la réception)\n\n';
     s += 'Client : ' + nom + '\nTéléphone : ' + tel + '\n';
     if (mode() !== 'retrait') s += 'Adresse : ' + $('adresse').value.trim() + ', ' + $('ville').value.trim() + ', ' + $('gov').value + '\n';

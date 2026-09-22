@@ -41,6 +41,7 @@ CURRENCY = "DT"
 
 # Carte Rose (fidélité) : 1 DT = 1 pétale ; 250 pétales = bon de LOYALTY_BON dinars
 LOYALTY_BON = 15.0
+SAMPLES_FROM = 250.0        # échantillons offerts à partir de ce montant de commande (livraison exclue)
 
 GOVERNORATES = [
     "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan",

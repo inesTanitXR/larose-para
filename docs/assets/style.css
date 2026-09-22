@@ -465,7 +465,7 @@ footer.site a:hover{color:var(--rose)}
 .rosecard .code{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px dashed var(--rose);
   border-radius:100px;padding:8px 16px;font-weight:500;letter-spacing:.08em;margin-top:14px;font-size:14px}
 .rosecard .code button{color:var(--rose-ink);font-size:12.5px;text-decoration:underline}
-.rewards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.rewards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
 .rw{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 20px;text-align:center}
 .rw .ic{width:54px;height:54px;border-radius:50%;background:var(--petal);display:grid;place-items:center;margin:0 auto 12px;font-size:24px}
 .rw b{display:block;font-family:var(--display);font-size:19px;font-weight:500;margin-bottom:4px}
@@ -489,3 +489,6 @@ footer.site a:hover{color:var(--rose)}
 .note svg{width:16px;height:16px;vertical-align:-3px;stroke:var(--rose);fill:none;stroke-width:1.6;margin-right:4px}
 #cart-page.hidden{display:none!important}
 @media(max-width:900px){#cart-page{grid-template-columns:1fr!important}#cart-page aside{position:static!important}}
+.samples{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--petal);font-size:13px;color:var(--ink-soft)}
+.samples.got{background:#e6f6ec;color:#1f6b3a}
+.samples .pbar{margin:8px 0 0;height:6px}

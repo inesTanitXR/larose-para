@@ -381,6 +381,7 @@ def build_home():
     <li><span>🎁</span><span><b>Cadeau de bienvenue</b> glissé dans votre première commande.</span></li>
     <li><span>🎂</span><span><b>Une surprise</b> le mois de votre anniversaire.</span></li>
     <li><span>💌</span><span><b>Parrainez une amie :</b> vous gagnez toutes les deux des pétales.</span></li>
+    <li><span>🧴</span><span><b>Dès {money(C.SAMPLES_FROM)} de commande,</b> des échantillons offerts dans votre colis.</span></li>
    </ul>
    <a class="btn btn-rose" href="carte-rose.html">Découvrir la Carte Rose</a>
   </div>
@@ -924,6 +925,7 @@ def build_loyalty():
         ("✿", "250 pétales", f"Un bon de {money(C.LOYALTY_BON)} à utiliser sur la commande suivante, en ligne ou en boutique."),
         ("🎂", "Anniversaire", "Le mois de votre anniversaire, une surprise vous attend dans votre commande ou en boutique."),
         ("💌", "Parrainage", "Votre amie commande avec votre code ROSE-xxxx : elle gagne 50 pétales, vous aussi."),
+        ("🧴", f"Dès {money(C.SAMPLES_FROM)}", "À partir de ce montant de commande, nous glissons des échantillons offerts dans votre colis — choisis selon vos produits."),
     ]
     rw = "".join(f'<div class="rw"><div class="ic">{i}</div><b>{E(t)}</b><small>{E(d)}</small></div>' for i, t, d in rewards)
     body = f"""
@@ -958,6 +960,7 @@ def build_loyalty():
   <details open><summary>Comment gagner des pétales ?</summary><p>Chaque commande passée sur le site ou en boutique rapporte 1 pétale par dinar (livraison exclue). Donnez simplement votre numéro de téléphone : c'est votre identifiant Carte Rose.</p></details>
   <details><summary>Comment utiliser mon bon de {money(C.LOYALTY_BON)} ?</summary><p>Dès 250 pétales, cochez « Utiliser mes pétales » au moment de commander, ou dites-le en boutique. Le bon est déduit du total, et votre rose repart pour un nouveau cycle.</p></details>
   <details><summary>Et le parrainage ?</summary><p>Votre code est ROSE suivi des 4 derniers chiffres de votre téléphone. Une amie l'indique à sa première commande : elle reçoit 50 pétales de bienvenue, et vous aussi.</p></details>
+  <details><summary>Comment obtenir des échantillons offerts ?</summary><p>Dès {money(C.SAMPLES_FROM)} de produits dans une même commande (hors livraison), nous ajoutons des échantillons à votre colis ou à votre sac en boutique — choisis en fonction de ce que vous achetez. Le récapitulatif de commande vous l'indique automatiquement.</p></details>
   <details><summary>J'ai changé de téléphone, mes pétales sont perdus ?</summary><p>Non : votre solde est conservé à la parapharmacie sous votre numéro. Écrivez-nous sur WhatsApp et nous vous le communiquons.</p></details>
  </div>
  <div class="center" style="margin-top:36px"><a class="btn btn-rose" href="catalogue.html">Faire éclore ma rose</a></div>
@@ -1004,7 +1007,7 @@ def copy_assets():
     for f in ("style.css", "site.js"):
         shutil.copy2(os.path.join(HERE, "assets-src", f), os.path.join(DOCS, "assets", f))
     cfg = json.dumps({"fee": C.DELIVERY_FEE, "free": C.FREE_DELIVERY_FROM, "wa": C.WHATSAPP, "mail": C.EMAIL,
-                      "cc": C.EMAIL_CC, "days": C.DELIVERY_DAYS, "city": C.CITY, "addr": C.ADDRESS}, ensure_ascii=False)
+                      "cc": C.EMAIL_CC, "days": C.DELIVERY_DAYS, "samples": C.SAMPLES_FROM, "city": C.CITY, "addr": C.ADDRESS}, ensure_ascii=False)
     js = open(os.path.join(HERE, "assets-src", "checkout.js"), encoding="utf-8").read().replace("__CFG__", cfg)
     open(os.path.join(DOCS, "assets", "checkout.js"), "w", encoding="utf-8").write(js)
     for sub in ("site", "products"):
