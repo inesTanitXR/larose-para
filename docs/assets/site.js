@@ -172,3 +172,48 @@
 
   paint();
 })();
+
+/* ---------- Carte Rose : fidélité (pétales), état local + repris dans chaque commande ---------- */
+(function(){
+  var K='larose_rose_v1', STEP=250, BON=15;
+  function get(){ try{ return JSON.parse(localStorage.getItem(K))||{petals:0,orders:0,hist:[]}; }catch(e){ return {petals:0,orders:0,hist:[]}; } }
+  function set(s){ try{ localStorage.setItem(K,JSON.stringify(s)); }catch(e){} paint(); return s; }
+  function code(tel){ var d=String(tel||'').replace(/\D/g,''); return d.length>=4?'ROSE-'+d.slice(-4):''; }
+  function stage(p){ return p<STEP*0.4?'Bouton de rose':p<STEP*0.8?'Éclosion':'Rose épanouie'; }
+  function bons(p){ return Math.floor(p/STEP); }
+  window.LRloyal={get:get,set:set,code:code,STEP:STEP,BON:BON,bons:bons,stage:stage,
+    credit:function(amount,extra){ var s=get(); var add=Math.floor(amount)+(extra||0); s.petals+=add; s.orders+=1;
+      s.hist.unshift({d:new Date().toISOString().slice(0,10),a:amount,p:add}); s.hist=s.hist.slice(0,30); return set(s); },
+    redeem:function(){ var s=get(); if(s.petals>=STEP){ s.petals-=STEP; s.used=(s.used||0)+1; } return set(s); }
+  };
+  /* rose SVG : 12 pétales qui se colorent avec la progression vers le prochain bon */
+  function roseSVG(id){
+    var petals='';
+    for(var i=0;i<12;i++){
+      var a=i*30+(i<6?0:15), rx=i<6?40:30, ry=i<6?66:50, off=i<6?52:38;
+      petals+='<ellipse class="pt" data-i="'+i+'" cx="120" cy="'+(120-off)+'" rx="'+rx+'" ry="'+ry+'" transform="rotate('+a+' 120 120)"/>';
+    }
+    return '<svg id="'+id+'" viewBox="-6 -6 252 252" aria-hidden="true">'+
+      '<path class="leaf" d="M120 236c-26 6-46-12-52-36 26-4 46 10 52 36z"/><path class="leaf" d="M120 236c26 6 46-12 52-36-26-4-46 10-52 36z"/>'+
+      petals+'<circle class="core" cx="120" cy="120" r="18"/><path d="M112 120a8 8 0 0116 0 8 8 0 01-16 0" fill="none" stroke="#d45c79" stroke-width="1.4"/></svg>';
+  }
+  window.LRroseSVG=roseSVG;
+  function paint(){
+    var s=get(), inCycle=s.petals%STEP, ratio=inCycle/STEP;
+    document.querySelectorAll('svg[data-rose]').forEach(function(svg){
+      var on=Math.round(ratio*12);
+      svg.querySelectorAll('.pt').forEach(function(p,i){ var k=(i<6?i*2:(i-6)*2+1); p.classList.toggle('on',k<on); p.classList.toggle('deep',k<on&&k%3===0); });
+    });
+    document.querySelectorAll('[data-rose-petals]').forEach(function(e){ e.textContent=s.petals; });
+    document.querySelectorAll('[data-rose-stage]').forEach(function(e){ e.textContent=stage(inCycle); });
+    document.querySelectorAll('[data-rose-bar]').forEach(function(e){ e.style.width=(ratio*100)+'%'; });
+    document.querySelectorAll('[data-rose-next]').forEach(function(e){ e.textContent=(STEP-inCycle); });
+    document.querySelectorAll('[data-rose-bons]').forEach(function(e){ e.textContent=bons(s.petals); });
+    document.querySelectorAll('[data-rose-orders]').forEach(function(e){ e.textContent=s.orders; });
+    document.querySelectorAll('[data-rose-code]').forEach(function(e){ e.textContent=code(s.tel)||'— activez votre carte —'; });
+    document.querySelectorAll('[data-rose-name]').forEach(function(e){ e.textContent=s.name?s.name:'et bienvenue'; });
+    if(window.LRloyalPaint) window.LRloyalPaint(s);
+  }
+  window.LRloyalRepaint=paint;
+  document.addEventListener('DOMContentLoaded',paint);
+})();

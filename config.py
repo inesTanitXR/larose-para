@@ -39,6 +39,9 @@ DELIVERY_DAYS = "24 à 72 h"
 
 CURRENCY = "DT"
 
+# Carte Rose (fidélité) : 1 DT = 1 pétale ; 250 pétales = bon de LOYALTY_BON dinars
+LOYALTY_BON = 15.0
+
 GOVERNORATES = [
     "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan",
     "Kasserine", "Kébili", "La Manouba", "Le Kef", "Mahdia", "Médenine", "Monastir",

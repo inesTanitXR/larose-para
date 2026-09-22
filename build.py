@@ -24,6 +24,8 @@ DOCS = os.path.join(HERE, "docs")
 FAST = "--fast" in sys.argv
 
 E = html.escape
+import hashlib as _h
+V = _h.md5((open(os.path.join(HERE,"assets-src","style.css"),"rb").read()+open(os.path.join(HERE,"assets-src","site.js"),"rb").read())).hexdigest()[:8]
 
 
 def slugify(s):
@@ -130,7 +132,7 @@ def head(title, desc, root, extra="", og_image="images/site/hero.jpg", canonical
 <link rel="apple-touch-icon" href="{root}images/site/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{root}assets/style.css">
+<link rel="stylesheet" href="{root}assets/style.css?v={V}">
 <script>window.LR_ROOT="{root}";window.LR_CUR="{C.CURRENCY}";</script>
 {extra}
 </head>
@@ -152,6 +154,7 @@ def header(root, active=""):
       <div class="dropmenu">{nav_items(root)}</div></div>
     <a href="{root}catalogue.html"{on('cat')}>Catalogue</a>
     <a href="{root}marques.html"{on('marques')}>Marques</a>
+    <a href="{root}carte-rose.html"{on('rose')} style="color:var(--rose-ink)">✿ Carte Rose</a>
   </nav>
   <a class="logo" href="{root}index.html" aria-label="{E(C.SITE_NAME)} — accueil">
     <img src="{root}images/site/logo.png" alt="{E(C.SITE_NAME)}" width="438" height="147"></a>
@@ -172,6 +175,7 @@ def header(root, active=""):
   <h4>La parapharmacie</h4>
   <a href="{root}catalogue.html">Tout le catalogue</a>
   <a href="{root}marques.html">Marques</a>
+  <a href="{root}carte-rose.html" style="color:var(--rose-ink)">✿ Carte Rose — fidélité</a>
   <a href="{root}boutique.html">La boutique</a>
   <a href="{root}commander.html">Comment commander</a>
   <a href="{root}contact.html">Contact</a>
@@ -214,6 +218,7 @@ def footer(root):
   <div><h4>La parapharmacie</h4><ul>
     <li><a href="{root}boutique.html">La boutique</a></li>
     <li><a href="{root}marques.html">Nos marques</a></li>
+    <li><a href="{root}carte-rose.html">Carte Rose (fidélité)</a></li>
     <li><a href="{root}commander.html">Comment commander</a></li>
     <li><a href="{root}livraison.html">Livraison & retrait</a></li>
     <li><a href="{root}contact.html">Contact</a></li>
@@ -229,7 +234,7 @@ def footer(root):
    <span>Paiement à la livraison ou en boutique · aucun paiement en ligne</span>
  </div>
 </div></footer>
-<script src="{root}assets/site.js" defer></script>
+<script src="{root}assets/site.js?v={V}" defer></script>
 </body></html>"""
 
 
@@ -364,6 +369,24 @@ def build_home():
  </div>
 </section>
 
+
+<section class="bg-petal">
+ <div class="wrap"><div class="homerose">
+  <div class="bloom"><div id="home-rose"></div></div>
+  <div>
+   <span class="eyebrow">Programme de fidélité</span>
+   <h2>Votre rose s'ouvre<br>à chaque commande</h2>
+   <ul>
+    <li><span>✿</span><span><b>1 dinar = 1 pétale.</b> Tous les 250 pétales, un bon de {money(C.LOYALTY_BON)} sur votre prochaine commande.</span></li>
+    <li><span>🎁</span><span><b>Cadeau de bienvenue</b> glissé dans votre première commande.</span></li>
+    <li><span>🎂</span><span><b>Une surprise</b> le mois de votre anniversaire.</span></li>
+    <li><span>💌</span><span><b>Parrainez une amie :</b> vous gagnez toutes les deux des pétales.</span></li>
+   </ul>
+   <a class="btn btn-rose" href="carte-rose.html">Découvrir la Carte Rose</a>
+  </div>
+ </div></div>
+</section>
+<script>document.addEventListener('DOMContentLoaded',function(){{document.getElementById('home-rose').innerHTML=window.LRroseSVG('hr');document.getElementById('hr').setAttribute('data-rose','');window.LRloyalRepaint();}});</script>
 <section class="bg-cream">
  <div class="wrap">
   <div class="split">
@@ -670,10 +693,22 @@ def build_cart():
     body = f"""
 <div class="page-hero"><div class="wrap">
  <div class="crumb"><a href="index.html">Accueil</a><span>›</span>Panier</div>
- <h1>Votre commande</h1>
- <p>Vérifiez votre panier, puis laissez-nous vos coordonnées. <strong>Aucun paiement en ligne</strong> : vous réglez en espèces à la livraison, ou en boutique au retrait.</p></div></div>
+ <h1>Finaliser ma commande</h1>
+ <p>Paiement à la livraison ou en boutique — aucune carte bancaire n'est demandée.</p></div></div>
 
 <section><div class="wrap">
+ <div id="confirm" style="display:none" class="wrap-narrow center">
+   <div style="width:76px;height:76px;border-radius:50%;background:#e6f6ec;display:grid;place-items:center;margin:0 auto 22px">
+     <svg viewBox="0 0 24 24" style="width:36px;height:36px;stroke:#2e9e5b;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+   <span class="eyebrow">Commande confirmée</span>
+   <h2>Merci <span id="c-name"></span> !</h2>
+   <p class="lead" style="margin:14px auto 6px">Votre commande <strong id="c-num"></strong> est enregistrée.</p>
+   <p class="muted" id="c-next"></p>
+   <div class="infocard" style="text-align:left;margin:30px auto;max-width:560px"><h3 style="font-size:18px">Récapitulatif</h3><div id="c-sum"></div></div>
+   <p class="muted" style="font-size:13.5px">Une question sur votre commande ? <a href="{wa_link("Bonjour, j'ai une question sur ma commande ")}" target="_blank" rel="noopener" style="color:var(--rose-ink);text-decoration:underline">WhatsApp</a> · <a href="tel:{C.PHONE_INTL}" style="color:var(--rose-ink);text-decoration:underline">{E(C.PHONE)}</a></p>
+   <p style="margin-top:26px"><a class="btn btn-rose" href="catalogue.html">Continuer mes achats</a> <a class="btn btn-line" style="margin-left:8px" href="carte-rose.html">Voir ma Carte Rose</a></p>
+ </div>
+
  <div id="cart-page" style="display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:start">
   <div>
    <h3 style="margin-bottom:8px">Vos produits</h3>
@@ -684,13 +719,13 @@ def build_cart():
    </div>
 
    <form id="order" style="margin-top:44px" novalidate>
-    <h3 style="margin-bottom:18px">Comment souhaitez-vous recevoir votre commande&nbsp;?</h3>
+    <h3 style="margin-bottom:18px">Livraison</h3>
     <label class="opt on"><input type="radio" name="mode" value="livraison" checked>
-      <span><b>Livraison à domicile — paiement à la livraison</b>
-      <small>Partout en Tunisie sous {C.DELIVERY_DAYS}. Frais {money(C.DELIVERY_FEE)} — offerts dès {money(C.FREE_DELIVERY_FROM)} d'achat. Vous payez en espèces au livreur.</small></span></label>
+      <span><b>Livraison à domicile</b>
+      <small>Partout en Tunisie sous {C.DELIVERY_DAYS}. Frais {money(C.DELIVERY_FEE)}, offerts dès {money(C.FREE_DELIVERY_FROM)} d'achat. Paiement en espèces à la réception.</small></span></label>
     <label class="opt"><input type="radio" name="mode" value="retrait">
       <span><b>Retrait en boutique — gratuit</b>
-      <small>Nous préparons votre commande, vous la récupérez {E(C.ADDRESS)}, {E(C.CITY)}. Paiement sur place.</small></span></label>
+      <small>{E(C.ADDRESS)}, {E(C.CITY)}. Nous vous prévenons dès que votre commande est prête. Paiement sur place.</small></span></label>
 
     <h3 style="margin:34px 0 18px">Vos coordonnées</h3>
     <div class="row2">
@@ -698,7 +733,7 @@ def build_cart():
         <input id="nom" name="nom" required autocomplete="name"><div class="msg">Merci d'indiquer votre nom.</div></div>
       <div class="field"><label for="tel">Téléphone <span class="req">*</span></label>
         <input id="tel" name="tel" type="tel" required autocomplete="tel" placeholder="ex. 20 123 456">
-        <div class="msg">Un numéro à 8 chiffres est nécessaire pour vous confirmer la commande.</div></div>
+        <div class="msg">Un numéro à 8 chiffres est nécessaire.</div></div>
     </div>
     <div id="addr">
       <div class="row2">
@@ -712,131 +747,42 @@ def build_cart():
         <input id="adresse" name="adresse" placeholder="Rue, immeuble, étage, points de repère">
         <div class="msg">L'adresse permet au livreur de vous trouver.</div></div>
     </div>
-    <div class="field"><label for="notes">Message (facultatif)</label>
-      <textarea id="notes" name="notes" placeholder="Une précision, un conseil souhaité, un produit à commander…"></textarea></div>
 
-    <div style="background:var(--petal);border-radius:14px;padding:18px 20px;font-size:14px;color:var(--ink-soft);margin-bottom:22px">
-      {ico('shield')} <strong>Commande simple et sans engagement de paiement en ligne.</strong> Dès réception, nous vous contactons pour organiser la livraison ou le retrait.
+    <div class="loyalbox">
+      <div class="mini" id="cart-rose"></div>
+      <div style="flex:1">
+        <b>Carte Rose</b> · <span data-rose-petals>0</span> pétales — cette commande vous en rapporte <b id="gain">0</b>.
+        <label id="redeem-row" style="display:none"><input type="checkbox" id="redeem"> Utiliser 250 pétales : <b>−{money(C.LOYALTY_BON)}</b> sur cette commande</label>
+        <div class="row2" style="margin-top:10px;gap:10px">
+          <div class="field" style="margin:0"><input id="prenom" name="prenom" placeholder="Prénom (pour votre carte)"></div>
+          <div class="field" style="margin:0"><input id="parrain" name="parrain" placeholder="Code parrainage ROSE-xxxx" style="text-transform:uppercase"></div>
+        </div>
+      </div>
     </div>
 
-    <button class="btn btn-wa btn-block" id="send-wa" type="button" style="margin-bottom:12px">{WA_SVG} Envoyer la commande sur WhatsApp</button>
-    <button class="btn btn-ink btn-block" id="send-msg" type="button" style="margin-bottom:12px">{FB_SVG_BTN} Envoyer sur Messenger</button>
-    <button class="btn btn-line btn-block" id="send-call" type="button">{ico('phone')} Préférer un appel — {E(C.PHONE)}</button>
-    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande envoyée ! Nous vous contactons très vite pour la livraison.</p>
+    <div class="field"><label for="notes">Instructions (facultatif)</label>
+      <textarea id="notes" name="notes" placeholder="Horaires de livraison, précisions sur l'adresse…"></textarea></div>
+
+    <button class="btn btn-rose btn-block" id="confirm-btn" type="submit" style="padding:16px;font-size:16px">Confirmer ma commande</button>
+    <p class="note muted" style="text-align:center;font-size:13px;margin-top:12px">{ico('shield')} Paiement à la réception · Vos données servent uniquement à traiter votre commande.</p>
+    <p id="send-err" style="display:none;color:#b3261e;font-size:14px;margin-top:14px;text-align:center">Nous n'avons pas pu enregistrer la commande. Réessayez, ou envoyez-la nous directement sur <a id="err-wa" href="#" target="_blank" rel="noopener" style="text-decoration:underline">WhatsApp</a>.</p>
    </form>
   </div>
 
   <aside class="infocard" style="position:sticky;top:100px">
     <h3>Récapitulatif</h3>
     <div id="sum"></div>
-    <div style="border-top:1px solid var(--line);margin-top:18px;padding-top:16px;font-size:13.4px;color:var(--gray);line-height:1.6">
-      {ico('wallet')} Paiement en espèces à la réception.<br>
-      {ico('truck')} Livraison {money(C.DELIVERY_FEE)} — offerte dès {money(C.FREE_DELIVERY_FROM)}.<br>
-      {ico('store')} Retrait gratuit en boutique.
+    <div class="note" style="border-top:1px solid var(--line);margin-top:18px;padding-top:16px;font-size:13.4px;color:var(--gray);line-height:1.7">
+      {ico('wallet')} Paiement en espèces à la réception<br>
+      {ico('truck')} Livraison {money(C.DELIVERY_FEE)} — offerte dès {money(C.FREE_DELIVERY_FROM)}<br>
+      {ico('store')} Retrait gratuit en boutique
     </div>
+    <p class="muted" style="font-size:13px;margin-top:16px">Une question avant de commander ? <a href="{wa_link("Bonjour La Rose, j'ai une question.")}" target="_blank" rel="noopener" style="color:var(--rose-ink);text-decoration:underline">Écrivez-nous</a>.</p>
   </aside>
  </div>
 </div></section>
-
-<script>
-document.addEventListener('DOMContentLoaded',function(){{
-  var R=window.LR_ROOT||'', FEE={C.DELIVERY_FEE}, FREE={C.FREE_DELIVERY_FROM}, WA="{C.WHATSAPP}", TEL="{C.PHONE_INTL}", MAIL="{C.EMAIL}", CC="{C.EMAIL_CC}", MSG="{C.MESSENGER}";
-  var lines=document.getElementById('cart-lines'), sum=document.getElementById('sum'),
-      form=document.getElementById('order'), empty=document.getElementById('cart-empty');
-  function money(n){{return window.LRmoney(n);}}
-  function mode(){{var m=form.querySelector('input[name=mode]:checked');return m?m.value:'livraison';}}
-  window.LRpaintCart=function(){{
-    var c=window.LRcart.read(), st=window.LRcart.subtotal();
-    if(!c.length){{lines.innerHTML='';empty.style.display='block';form.style.display='none';}}
-    else{{empty.style.display='none';form.style.display='';
-      lines.innerHTML=c.map(function(i){{
-        var th=i.img?'<img src="'+R+i.img+'" alt="" loading="lazy">':'<span class="ph">✿</span>';
-        return '<div class="litem"><a class="thumb" href="'+R+i.u+'">'+th+'</a><div>'+
-          '<small>'+window.LResc(i.b||'')+'</small><a href="'+R+i.u+'"><b>'+window.LResc(i.n)+'</b></a>'+
-          '<div class="qs"><button data-dec="'+i.id+'">−</button><span>'+i.q+'</span><button data-inc="'+i.id+'">+</button></div>'+
-          '<button class="rm" data-rm="'+i.id+'">Retirer</button></div><div class="lp">'+money(i.p*i.q)+'</div></div>';
-      }}).join('');}}
-    var deliv=(mode()==='retrait'||st>=FREE||st===0)?0:FEE;
-    var dl=mode()==='retrait'?'Retrait en boutique':(deliv===0?'Offerte':money(deliv));
-    sum.innerHTML='<div class="sumrow"><span>Sous-total ('+window.LRcart.count()+')</span><b>'+money(st)+'</b></div>'+
-      '<div class="sumrow"><span>Livraison</span><span>'+dl+'</span></div>'+
-      '<div class="sumrow total"><span>Total</span><span>'+money(st+deliv)+'</span></div>';
-  }};
-  form.addEventListener('change',function(e){{
-    if(e.target.name==='mode'){{
-      form.querySelectorAll('.opt').forEach(function(o){{o.classList.toggle('on',o.querySelector('input').checked);}});
-      document.getElementById('addr').style.display=mode()==='retrait'?'none':'';
-      window.LRpaintCart();
-    }}
-    e.target.closest('.field')&&e.target.closest('.field').classList.remove('err');
-  }});
-  function bad(id,test){{
-    var f=document.getElementById(id), w=f.closest('.field');
-    var ok=test(f.value.trim()); w.classList.toggle('err',!ok); return !ok;
-  }}
-  function validate(){{
-    var e=false;
-    e=bad('nom',function(v){{return v.length>2;}})||e;
-    e=bad('tel',function(v){{return v.replace(/\\D/g,'').length>=8;}})||e;
-    if(mode()!=='retrait'){{
-      e=bad('gov',function(v){{return !!v;}})||e;
-      e=bad('ville',function(v){{return v.length>1;}})||e;
-      e=bad('adresse',function(v){{return v.length>4;}})||e;
-    }}
-    if(e){{var f=form.querySelector('.field.err');if(f)f.scrollIntoView({{block:'center',behavior:'smooth'}});}}
-    return !e;
-  }}
-  function orderText(){{
-    var c=window.LRcart.read(), st=window.LRcart.subtotal();
-    var deliv=(mode()==='retrait'||st>=FREE)?0:FEE;
-    var t='*Nouvelle commande — La Rose Parapharmacie*\\n\\n';
-    c.forEach(function(i){{t+='• '+i.n+(i.b?' ('+i.b+')':'')+' × '+i.q+' — '+money(i.p*i.q)+'\\n';}});
-    t+='\\nSous-total : '+money(st)+'\\n';
-    t+=mode()==='retrait'?'Mode : retrait en boutique\\n':'Livraison : '+(deliv?money(deliv):'offerte')+'\\n';
-    t+='*Total : '+money(st+deliv)+'*\\n\\n';
-    t+='Nom : '+document.getElementById('nom').value.trim()+'\\n';
-    t+='Téléphone : '+document.getElementById('tel').value.trim()+'\\n';
-    if(mode()!=='retrait'){{
-      t+='Adresse : '+document.getElementById('adresse').value.trim()+', '+
-         document.getElementById('ville').value.trim()+', '+document.getElementById('gov').value+'\\n';
-    }}
-    var n=document.getElementById('notes').value.trim();
-    if(n)t+='Message : '+n+'\\n';
-    t+='\\n(Paiement à la réception)';
-    return t;
-  }}
-  var mailed=false;
-  function mail(txt){{
-    if(!MAIL||mailed)return;
-    mailed=true;
-    var f=new FormData();
-    f.append('_subject','Nouvelle commande — '+document.getElementById('nom').value.trim());
-    f.append('_template','box'); f.append('_captcha','false'); if(CC)f.append('_cc',CC);
-    f.append('Commande',txt);
-    f.append('Nom',document.getElementById('nom').value.trim());
-    f.append('Téléphone',document.getElementById('tel').value.trim());
-    fetch('https://formsubmit.co/ajax/'+MAIL,{{method:'POST',body:f,headers:{{'Accept':'application/json'}}}})
-      .then(function(){{var ok=document.getElementById('sent-ok');if(ok)ok.style.display='block';}})
-      .catch(function(){{mailed=false;}});
-  }}
-  document.getElementById('send-wa').addEventListener('click',function(){{
-    if(!validate())return;
-    var t=orderText(); mail(t);
-    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t),'_blank');
-  }});
-  document.getElementById('send-msg').addEventListener('click',function(){{
-    if(!validate())return;
-    var t=orderText(); mail(t);
-    var go=function(){{window.open(MSG,'_blank');}};
-    if(navigator.clipboard){{navigator.clipboard.writeText(t).then(function(){{
-      alert('Votre commande est copiée : collez-la dans la conversation Messenger qui va s\'ouvrir.');go();}},go);}}
-    else go();
-  }});
-  document.getElementById('send-call').addEventListener('click',function(){{location.href='tel:'+TEL;}});
-  window.LRpaintCart();
-}});
-</script>"""
-    page("panier.html", "Panier", "Validez votre commande : livraison avec paiement à la livraison, ou retrait en boutique à Nabeul.", body)
+<script src="assets/checkout.js?v={V}" defer></script>"""
+    page("panier.html", "Finaliser ma commande", "Validez votre commande : livraison avec paiement à la livraison partout en Tunisie, ou retrait en boutique à Nabeul.", body)
 
 
 def build_static():
@@ -972,6 +918,63 @@ def build_static():
     page("404.html", "Page introuvable", "Page introuvable.", body)
 
 
+def build_loyalty():
+    rewards = [
+        ("🌱", "Bouton", "Votre carte est créée dès votre première commande — avec un cadeau de bienvenue glissé dans le colis."),
+        ("✿", "250 pétales", f"Un bon de {money(C.LOYALTY_BON)} à utiliser sur la commande suivante, en ligne ou en boutique."),
+        ("🎂", "Anniversaire", "Le mois de votre anniversaire, une surprise vous attend dans votre commande ou en boutique."),
+        ("💌", "Parrainage", "Votre amie commande avec votre code ROSE-xxxx : elle gagne 50 pétales, vous aussi."),
+    ]
+    rw = "".join(f'<div class="rw"><div class="ic">{i}</div><b>{E(t)}</b><small>{E(d)}</small></div>' for i, t, d in rewards)
+    body = f"""
+<div class="page-hero"><div class="wrap">
+ <div class="crumb"><a href="index.html">Accueil</a><span>›</span>Carte Rose</div>
+ <h1>La Carte Rose</h1>
+ <p>Notre programme de fidélité, aussi simple qu'une rose qui s'ouvre : <strong>1 dinar dépensé = 1 pétale</strong>. À 250 pétales, votre rose est épanouie et vous offre un bon de {money(C.LOYALTY_BON)}.</p></div></div>
+
+<section><div class="wrap">
+ <div class="rosecard">
+  <div class="bloom" id="page-rose"></div>
+  <div>
+   <span class="stage" data-rose-stage>Bouton de rose</span>
+   <h3>Bonjour <span data-rose-name>et bienvenue</span> ✿</h3>
+   <div class="big"><span data-rose-petals>0</span><small>pétales</small></div>
+   <div class="pbar"><i data-rose-bar style="width:0%"></i></div>
+   <div class="next">Encore <b data-rose-next>250</b> pétales avant votre prochain bon de {money(C.LOYALTY_BON)} · <b data-rose-bons>0</b> bon(s) disponible(s) · <b data-rose-orders>0</b> commande(s)</div>
+   <div class="code">Mon code parrainage : <span data-rose-code>—</span> <button type="button" id="copycode">copier</button></div>
+   <p class="muted" style="font-size:12.5px;margin-top:12px">Votre carte se remplit automatiquement à chaque commande passée depuis cet appareil. Le solde de référence est celui de la parapharmacie — il vous suffit de donner votre numéro de téléphone en boutique.</p>
+  </div>
+ </div>
+</div></section>
+
+<section class="bg-cream"><div class="wrap">
+ <div class="sec-head center"><span class="eyebrow">Ce que votre rose vous offre</span><h2>Quatre bonnes raisons de revenir</h2></div>
+ <div class="rewards">{rw}</div>
+</div></section>
+
+<section><div class="wrap-narrow">
+ <div class="sec-head center"><span class="eyebrow">Comment ça marche</span><h2>Simple comme une rose</h2></div>
+ <div class="faq">
+  <details open><summary>Comment gagner des pétales ?</summary><p>Chaque commande passée sur le site ou en boutique rapporte 1 pétale par dinar (livraison exclue). Donnez simplement votre numéro de téléphone : c'est votre identifiant Carte Rose.</p></details>
+  <details><summary>Comment utiliser mon bon de {money(C.LOYALTY_BON)} ?</summary><p>Dès 250 pétales, cochez « Utiliser mes pétales » au moment de commander, ou dites-le en boutique. Le bon est déduit du total, et votre rose repart pour un nouveau cycle.</p></details>
+  <details><summary>Et le parrainage ?</summary><p>Votre code est ROSE suivi des 4 derniers chiffres de votre téléphone. Une amie l'indique à sa première commande : elle reçoit 50 pétales de bienvenue, et vous aussi.</p></details>
+  <details><summary>J'ai changé de téléphone, mes pétales sont perdus ?</summary><p>Non : votre solde est conservé à la parapharmacie sous votre numéro. Écrivez-nous sur WhatsApp et nous vous le communiquons.</p></details>
+ </div>
+ <div class="center" style="margin-top:36px"><a class="btn btn-rose" href="catalogue.html">Faire éclore ma rose</a></div>
+</div></section>
+<script>
+document.addEventListener('DOMContentLoaded',function(){{
+  document.getElementById('page-rose').innerHTML=window.LRroseSVG('pr');document.getElementById('pr').setAttribute('data-rose','');
+  window.LRloyalRepaint();
+  document.getElementById('copycode').addEventListener('click',function(){{
+    var c=window.LRloyal.code(window.LRloyal.get().tel); if(!c){{alert('Votre code apparaît après votre première commande.');return;}}
+    if(navigator.clipboard)navigator.clipboard.writeText(c);this.textContent='copié ✓';
+  }});
+}});
+</script>"""
+    page("carte-rose.html", "Carte Rose — fidélité", f"Programme de fidélité La Rose Parapharmacie : 1 dinar = 1 pétale, un bon de {money(C.LOYALTY_BON)} tous les 250 pétales, cadeau de bienvenue, anniversaire et parrainage.", body, active="rose")
+
+
 def build_data():
     os.makedirs(os.path.join(DOCS, "data"), exist_ok=True)
     idx = []
@@ -983,7 +986,7 @@ def build_data():
                     "s": re.sub(r"\s+", " ", s)})
     json.dump(idx, open(os.path.join(DOCS, "data", "search.json"), "w"), ensure_ascii=False, separators=(",", ":"))
 
-    urls = ["index.html", "catalogue.html", "marques.html", "boutique.html", "commander.html",
+    urls = ["index.html", "catalogue.html", "marques.html", "boutique.html", "commander.html", "carte-rose.html",
             "livraison.html", "contact.html", "panier.html"]
     urls += [f"categorie/{c}.html" for c in C.CATEGORY_ORDER if BY_CAT.get(c)]
     urls += [f"marque/{slugify(b)}.html" for b in BRANDS]
@@ -1000,6 +1003,10 @@ def copy_assets():
     os.makedirs(os.path.join(DOCS, "assets"), exist_ok=True)
     for f in ("style.css", "site.js"):
         shutil.copy2(os.path.join(HERE, "assets-src", f), os.path.join(DOCS, "assets", f))
+    cfg = json.dumps({"fee": C.DELIVERY_FEE, "free": C.FREE_DELIVERY_FROM, "wa": C.WHATSAPP, "mail": C.EMAIL,
+                      "cc": C.EMAIL_CC, "days": C.DELIVERY_DAYS, "city": C.CITY, "addr": C.ADDRESS}, ensure_ascii=False)
+    js = open(os.path.join(HERE, "assets-src", "checkout.js"), encoding="utf-8").read().replace("__CFG__", cfg)
+    open(os.path.join(DOCS, "assets", "checkout.js"), "w", encoding="utf-8").write(js)
     for sub in ("site", "products"):
         src = os.path.join(HERE, "images", sub)
         dst = os.path.join(DOCS, "images", sub)
@@ -1027,6 +1034,7 @@ def main():
     build_brands()
     build_cart()
     build_static()
+    build_loyalty()
     build_data()
     if not FAST:
         build_products()

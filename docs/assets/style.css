@@ -443,3 +443,49 @@ footer.site a:hover{color:var(--rose)}
   .pdp .gal{aspect-ratio:1/.86}
   .topbar .wrap{gap:14px;font-size:11.5px}
 }
+
+/* ---- Carte Rose (fidélité) ---- */
+.rosecard{background:linear-gradient(135deg,#fff 0%,var(--petal) 100%);border:1px solid var(--blush);border-radius:24px;
+  padding:34px;display:grid;grid-template-columns:230px 1fr;gap:30px;align-items:center;box-shadow:var(--shadow)}
+.rosecard .bloom{width:230px;height:230px;margin:0 auto;flex:0 0 auto}
+.rosecard .bloom>div,.rosecard .bloom svg{width:230px;height:230px;display:block}
+.rosecard .bloom svg{width:100%;height:100%;overflow:visible}
+.bloom .pt{fill:#f7d9d6;stroke:#f2b7c0;stroke-width:1.2;transition:fill .6s}
+.bloom .pt.on{fill:var(--rose)}
+.bloom .pt.on.deep{fill:var(--rose-deep)}
+.bloom .core{fill:#fff;stroke:var(--rose-deep);stroke-width:1.4}
+.bloom .leaf{fill:#bfd8c2;stroke:#8fb896;stroke-width:1}
+.rosecard h3{font-size:26px;margin-bottom:6px}
+.rosecard .stage{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-ink);font-weight:500}
+.rosecard .big{font-family:var(--display);font-size:46px;line-height:1;margin:10px 0 4px}
+.rosecard .big small{font-family:var(--sans);font-size:14px;color:var(--gray);margin-left:6px}
+.pbar{height:10px;border-radius:100px;background:#fff;border:1px solid var(--blush);overflow:hidden;margin:14px 0 8px}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--blush),var(--rose));border-radius:100px;transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.rosecard .next{font-size:13.5px;color:var(--ink-soft)}
+.rosecard .code{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px dashed var(--rose);
+  border-radius:100px;padding:8px 16px;font-weight:500;letter-spacing:.08em;margin-top:14px;font-size:14px}
+.rosecard .code button{color:var(--rose-ink);font-size:12.5px;text-decoration:underline}
+.rewards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.rw{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 20px;text-align:center}
+.rw .ic{width:54px;height:54px;border-radius:50%;background:var(--petal);display:grid;place-items:center;margin:0 auto 12px;font-size:24px}
+.rw b{display:block;font-family:var(--display);font-size:19px;font-weight:500;margin-bottom:4px}
+.rw small{color:var(--gray);font-size:13px;line-height:1.45;display:block}
+.rw.lock{opacity:.55}
+.rw.got{border-color:var(--rose);box-shadow:0 0 0 3px var(--petal)}
+.loyalbox{background:var(--petal);border:1px solid var(--blush);border-radius:16px;padding:16px 18px;margin:8px 0 22px;font-size:14px;display:flex;gap:14px;align-items:center}
+.loyalbox .mini{width:44px;height:44px;flex:0 0 auto}
+.loyalbox b{font-weight:500}
+.loyalbox label{display:flex;gap:8px;align-items:center;margin-top:8px;cursor:pointer}
+.loyalbox input[type=checkbox]{accent-color:var(--rose);width:16px;height:16px}
+.homerose{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.homerose .bloom{width:min(340px,80vw);margin:0 auto}
+.homerose .bloom svg{width:100%;height:auto;overflow:visible}
+.homerose ul{list-style:none;margin:18px 0 26px;display:grid;gap:10px}
+.homerose li{display:flex;gap:12px;align-items:flex-start;color:var(--ink-soft);font-size:15px}
+.homerose li span:first-child{font-size:20px;line-height:1.2}
+@media(max-width:900px){.rosecard{grid-template-columns:1fr;text-align:center}.rosecard .code{margin-inline:auto}
+  .rewards{grid-template-columns:repeat(2,1fr)}.homerose{grid-template-columns:1fr;gap:26px}}
+
+.note svg{width:16px;height:16px;vertical-align:-3px;stroke:var(--rose);fill:none;stroke-width:1.6;margin-right:4px}
+#cart-page.hidden{display:none!important}
+@media(max-width:900px){#cart-page{grid-template-columns:1fr!important}#cart-page aside{position:static!important}}

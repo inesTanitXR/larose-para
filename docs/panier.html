@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Panier | La Rose Parapharmacie</title>
-<meta name="description" content="Validez votre commande : livraison avec paiement à la livraison, ou retrait en boutique à Nabeul.">
-<meta property="og:title" content="Panier | La Rose Parapharmacie">
-<meta property="og:description" content="Validez votre commande : livraison avec paiement à la livraison, ou retrait en boutique à Nabeul.">
+<title>Finaliser ma commande | La Rose Parapharmacie</title>
+<meta name="description" content="Validez votre commande : livraison avec paiement à la livraison partout en Tunisie, ou retrait en boutique à Nabeul.">
+<meta property="og:title" content="Finaliser ma commande | La Rose Parapharmacie">
+<meta property="og:description" content="Validez votre commande : livraison avec paiement à la livraison partout en Tunisie, ou retrait en boutique à Nabeul.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_TN">
 <meta property="og:image" content="images/site/hero.jpg">
@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="images/site/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=d959274b">
 <script>window.LR_ROOT="";window.LR_CUR="DT";</script>
 
 </head>
@@ -31,6 +31,7 @@
       <div class="dropmenu"><a href="categorie/visage.html">Visage<small>413 produits</small></a><a href="categorie/solaire.html">Solaire<small>188 produits</small></a><a href="categorie/cheveux.html">Cheveux<small>197 produits</small></a><a href="categorie/corps.html">Corps &amp; hygiène<small>258 produits</small></a><a href="categorie/bebe.html">Bébé &amp; maman<small>217 produits</small></a><a href="categorie/complements.html">Compléments<small>247 produits</small></a><a href="categorie/bucco.html">Bucco-dentaire<small>89 produits</small></a><a href="categorie/medical.html">Matériel médical<small>129 produits</small></a><a href="categorie/beaute.html">Beauté &amp; accessoires<small>214 produits</small></a><a href="categorie/autres.html">Autres produits<small>204 produits</small></a></div></div>
     <a href="catalogue.html">Catalogue</a>
     <a href="marques.html">Marques</a>
+    <a href="carte-rose.html" style="color:var(--rose-ink)">✿ Carte Rose</a>
   </nav>
   <a class="logo" href="index.html" aria-label="La Rose Parapharmacie — accueil">
     <img src="images/site/logo.png" alt="La Rose Parapharmacie" width="438" height="147"></a>
@@ -51,6 +52,7 @@
   <h4>La parapharmacie</h4>
   <a href="catalogue.html">Tout le catalogue</a>
   <a href="marques.html">Marques</a>
+  <a href="carte-rose.html" style="color:var(--rose-ink)">✿ Carte Rose — fidélité</a>
   <a href="boutique.html">La boutique</a>
   <a href="commander.html">Comment commander</a>
   <a href="contact.html">Contact</a>
@@ -72,10 +74,22 @@
 
 <div class="page-hero"><div class="wrap">
  <div class="crumb"><a href="index.html">Accueil</a><span>›</span>Panier</div>
- <h1>Votre commande</h1>
- <p>Vérifiez votre panier, puis laissez-nous vos coordonnées. <strong>Aucun paiement en ligne</strong> : vous réglez en espèces à la livraison, ou en boutique au retrait.</p></div></div>
+ <h1>Finaliser ma commande</h1>
+ <p>Paiement à la livraison ou en boutique — aucune carte bancaire n'est demandée.</p></div></div>
 
 <section><div class="wrap">
+ <div id="confirm" style="display:none" class="wrap-narrow center">
+   <div style="width:76px;height:76px;border-radius:50%;background:#e6f6ec;display:grid;place-items:center;margin:0 auto 22px">
+     <svg viewBox="0 0 24 24" style="width:36px;height:36px;stroke:#2e9e5b;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+   <span class="eyebrow">Commande confirmée</span>
+   <h2>Merci <span id="c-name"></span> !</h2>
+   <p class="lead" style="margin:14px auto 6px">Votre commande <strong id="c-num"></strong> est enregistrée.</p>
+   <p class="muted" id="c-next"></p>
+   <div class="infocard" style="text-align:left;margin:30px auto;max-width:560px"><h3 style="font-size:18px">Récapitulatif</h3><div id="c-sum"></div></div>
+   <p class="muted" style="font-size:13.5px">Une question sur votre commande ? <a href="https://wa.me/21623979204?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20ma%20commande%20" target="_blank" rel="noopener" style="color:var(--rose-ink);text-decoration:underline">WhatsApp</a> · <a href="tel:+21623979204" style="color:var(--rose-ink);text-decoration:underline">23 979 204</a></p>
+   <p style="margin-top:26px"><a class="btn btn-rose" href="catalogue.html">Continuer mes achats</a> <a class="btn btn-line" style="margin-left:8px" href="carte-rose.html">Voir ma Carte Rose</a></p>
+ </div>
+
  <div id="cart-page" style="display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:start">
   <div>
    <h3 style="margin-bottom:8px">Vos produits</h3>
@@ -86,13 +100,13 @@
    </div>
 
    <form id="order" style="margin-top:44px" novalidate>
-    <h3 style="margin-bottom:18px">Comment souhaitez-vous recevoir votre commande&nbsp;?</h3>
+    <h3 style="margin-bottom:18px">Livraison</h3>
     <label class="opt on"><input type="radio" name="mode" value="livraison" checked>
-      <span><b>Livraison à domicile — paiement à la livraison</b>
-      <small>Partout en Tunisie sous 24 à 72 h. Frais 8 DT — offerts dès 150 DT d'achat. Vous payez en espèces au livreur.</small></span></label>
+      <span><b>Livraison à domicile</b>
+      <small>Partout en Tunisie sous 24 à 72 h. Frais 8 DT, offerts dès 150 DT d'achat. Paiement en espèces à la réception.</small></span></label>
     <label class="opt"><input type="radio" name="mode" value="retrait">
       <span><b>Retrait en boutique — gratuit</b>
-      <small>Nous préparons votre commande, vous la récupérez Avenue Hédi Nouira, Nabeul. Paiement sur place.</small></span></label>
+      <small>Avenue Hédi Nouira, Nabeul. Nous vous prévenons dès que votre commande est prête. Paiement sur place.</small></span></label>
 
     <h3 style="margin:34px 0 18px">Vos coordonnées</h3>
     <div class="row2">
@@ -100,7 +114,7 @@
         <input id="nom" name="nom" required autocomplete="name"><div class="msg">Merci d'indiquer votre nom.</div></div>
       <div class="field"><label for="tel">Téléphone <span class="req">*</span></label>
         <input id="tel" name="tel" type="tel" required autocomplete="tel" placeholder="ex. 20 123 456">
-        <div class="msg">Un numéro à 8 chiffres est nécessaire pour vous confirmer la commande.</div></div>
+        <div class="msg">Un numéro à 8 chiffres est nécessaire.</div></div>
     </div>
     <div id="addr">
       <div class="row2">
@@ -114,130 +128,41 @@
         <input id="adresse" name="adresse" placeholder="Rue, immeuble, étage, points de repère">
         <div class="msg">L'adresse permet au livreur de vous trouver.</div></div>
     </div>
-    <div class="field"><label for="notes">Message (facultatif)</label>
-      <textarea id="notes" name="notes" placeholder="Une précision, un conseil souhaité, un produit à commander…"></textarea></div>
 
-    <div style="background:var(--petal);border-radius:14px;padding:18px 20px;font-size:14px;color:var(--ink-soft);margin-bottom:22px">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.6-3.3 8.4-8 9-4.7-.6-8-4.4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg> <strong>Commande simple et sans engagement de paiement en ligne.</strong> Dès réception, nous vous contactons pour organiser la livraison ou le retrait.
+    <div class="loyalbox">
+      <div class="mini" id="cart-rose"></div>
+      <div style="flex:1">
+        <b>Carte Rose</b> · <span data-rose-petals>0</span> pétales — cette commande vous en rapporte <b id="gain">0</b>.
+        <label id="redeem-row" style="display:none"><input type="checkbox" id="redeem"> Utiliser 250 pétales : <b>−15 DT</b> sur cette commande</label>
+        <div class="row2" style="margin-top:10px;gap:10px">
+          <div class="field" style="margin:0"><input id="prenom" name="prenom" placeholder="Prénom (pour votre carte)"></div>
+          <div class="field" style="margin:0"><input id="parrain" name="parrain" placeholder="Code parrainage ROSE-xxxx" style="text-transform:uppercase"></div>
+        </div>
+      </div>
     </div>
 
-    <button class="btn btn-wa btn-block" id="send-wa" type="button" style="margin-bottom:12px"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 1c.3.1.4.2.5.3 0 .1 0 .6-.3 1.3z"/></svg> Envoyer la commande sur WhatsApp</button>
-    <button class="btn btn-ink btn-block" id="send-msg" type="button" style="margin-bottom:12px"><svg viewBox="0 0 24 24" style="fill:#fff"><path d="M12 2C6.5 2 2 6.1 2 11.3c0 2.9 1.4 5.5 3.7 7.2V22l3.4-1.9c.9.3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2zm1 12.5l-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"/></svg> Envoyer sur Messenger</button>
-    <button class="btn btn-line btn-block" id="send-call" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 006 6L16 13l5 2v4a2 2 0 01-2.2 2A17 17 0 013 5.2 2 2 0 015 3z"/></svg> Préférer un appel — 23 979 204</button>
-    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande envoyée ! Nous vous contactons très vite pour la livraison.</p>
+    <div class="field"><label for="notes">Instructions (facultatif)</label>
+      <textarea id="notes" name="notes" placeholder="Horaires de livraison, précisions sur l'adresse…"></textarea></div>
+
+    <button class="btn btn-rose btn-block" id="confirm-btn" type="submit" style="padding:16px;font-size:16px">Confirmer ma commande</button>
+    <p class="note muted" style="text-align:center;font-size:13px;margin-top:12px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.6-3.3 8.4-8 9-4.7-.6-8-4.4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg> Paiement à la réception · Vos données servent uniquement à traiter votre commande.</p>
+    <p id="send-err" style="display:none;color:#b3261e;font-size:14px;margin-top:14px;text-align:center">Nous n'avons pas pu enregistrer la commande. Réessayez, ou envoyez-la nous directement sur <a id="err-wa" href="#" target="_blank" rel="noopener" style="text-decoration:underline">WhatsApp</a>.</p>
    </form>
   </div>
 
   <aside class="infocard" style="position:sticky;top:100px">
     <h3>Récapitulatif</h3>
     <div id="sum"></div>
-    <div style="border-top:1px solid var(--line);margin-top:18px;padding-top:16px;font-size:13.4px;color:var(--gray);line-height:1.6">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M16 12h3"/></svg> Paiement en espèces à la réception.<br>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h11v9H2zM13 9h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg> Livraison 8 DT — offerte dès 150 DT.<br>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v10h16V9"/><path d="M3 9l1.6-5h14.8L21 9a3 3 0 01-6 0 3 3 0 01-6 0 3 3 0 01-6 0z"/></svg> Retrait gratuit en boutique.
+    <div class="note" style="border-top:1px solid var(--line);margin-top:18px;padding-top:16px;font-size:13.4px;color:var(--gray);line-height:1.7">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M16 12h3"/></svg> Paiement en espèces à la réception<br>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h11v9H2zM13 9h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg> Livraison 8 DT — offerte dès 150 DT<br>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v10h16V9"/><path d="M3 9l1.6-5h14.8L21 9a3 3 0 01-6 0 3 3 0 01-6 0 3 3 0 01-6 0z"/></svg> Retrait gratuit en boutique
     </div>
+    <p class="muted" style="font-size:13px;margin-top:16px">Une question avant de commander ? <a href="https://wa.me/21623979204?text=Bonjour%20La%20Rose%2C%20j%27ai%20une%20question." target="_blank" rel="noopener" style="color:var(--rose-ink);text-decoration:underline">Écrivez-nous</a>.</p>
   </aside>
  </div>
 </div></section>
-
-<script>
-document.addEventListener('DOMContentLoaded',function(){
-  var R=window.LR_ROOT||'', FEE=8.0, FREE=150.0, WA="21623979204", TEL="+21623979204", MAIL="inessaid88@gmail.com", CC="fatmazangar95@gmail.com", MSG="https://m.me/61587418413300";
-  var lines=document.getElementById('cart-lines'), sum=document.getElementById('sum'),
-      form=document.getElementById('order'), empty=document.getElementById('cart-empty');
-  function money(n){return window.LRmoney(n);}
-  function mode(){var m=form.querySelector('input[name=mode]:checked');return m?m.value:'livraison';}
-  window.LRpaintCart=function(){
-    var c=window.LRcart.read(), st=window.LRcart.subtotal();
-    if(!c.length){lines.innerHTML='';empty.style.display='block';form.style.display='none';}
-    else{empty.style.display='none';form.style.display='';
-      lines.innerHTML=c.map(function(i){
-        var th=i.img?'<img src="'+R+i.img+'" alt="" loading="lazy">':'<span class="ph">✿</span>';
-        return '<div class="litem"><a class="thumb" href="'+R+i.u+'">'+th+'</a><div>'+
-          '<small>'+window.LResc(i.b||'')+'</small><a href="'+R+i.u+'"><b>'+window.LResc(i.n)+'</b></a>'+
-          '<div class="qs"><button data-dec="'+i.id+'">−</button><span>'+i.q+'</span><button data-inc="'+i.id+'">+</button></div>'+
-          '<button class="rm" data-rm="'+i.id+'">Retirer</button></div><div class="lp">'+money(i.p*i.q)+'</div></div>';
-      }).join('');}
-    var deliv=(mode()==='retrait'||st>=FREE||st===0)?0:FEE;
-    var dl=mode()==='retrait'?'Retrait en boutique':(deliv===0?'Offerte':money(deliv));
-    sum.innerHTML='<div class="sumrow"><span>Sous-total ('+window.LRcart.count()+')</span><b>'+money(st)+'</b></div>'+
-      '<div class="sumrow"><span>Livraison</span><span>'+dl+'</span></div>'+
-      '<div class="sumrow total"><span>Total</span><span>'+money(st+deliv)+'</span></div>';
-  };
-  form.addEventListener('change',function(e){
-    if(e.target.name==='mode'){
-      form.querySelectorAll('.opt').forEach(function(o){o.classList.toggle('on',o.querySelector('input').checked);});
-      document.getElementById('addr').style.display=mode()==='retrait'?'none':'';
-      window.LRpaintCart();
-    }
-    e.target.closest('.field')&&e.target.closest('.field').classList.remove('err');
-  });
-  function bad(id,test){
-    var f=document.getElementById(id), w=f.closest('.field');
-    var ok=test(f.value.trim()); w.classList.toggle('err',!ok); return !ok;
-  }
-  function validate(){
-    var e=false;
-    e=bad('nom',function(v){return v.length>2;})||e;
-    e=bad('tel',function(v){return v.replace(/\D/g,'').length>=8;})||e;
-    if(mode()!=='retrait'){
-      e=bad('gov',function(v){return !!v;})||e;
-      e=bad('ville',function(v){return v.length>1;})||e;
-      e=bad('adresse',function(v){return v.length>4;})||e;
-    }
-    if(e){var f=form.querySelector('.field.err');if(f)f.scrollIntoView({block:'center',behavior:'smooth'});}
-    return !e;
-  }
-  function orderText(){
-    var c=window.LRcart.read(), st=window.LRcart.subtotal();
-    var deliv=(mode()==='retrait'||st>=FREE)?0:FEE;
-    var t='*Nouvelle commande — La Rose Parapharmacie*\n\n';
-    c.forEach(function(i){t+='• '+i.n+(i.b?' ('+i.b+')':'')+' × '+i.q+' — '+money(i.p*i.q)+'\n';});
-    t+='\nSous-total : '+money(st)+'\n';
-    t+=mode()==='retrait'?'Mode : retrait en boutique\n':'Livraison : '+(deliv?money(deliv):'offerte')+'\n';
-    t+='*Total : '+money(st+deliv)+'*\n\n';
-    t+='Nom : '+document.getElementById('nom').value.trim()+'\n';
-    t+='Téléphone : '+document.getElementById('tel').value.trim()+'\n';
-    if(mode()!=='retrait'){
-      t+='Adresse : '+document.getElementById('adresse').value.trim()+', '+
-         document.getElementById('ville').value.trim()+', '+document.getElementById('gov').value+'\n';
-    }
-    var n=document.getElementById('notes').value.trim();
-    if(n)t+='Message : '+n+'\n';
-    t+='\n(Paiement à la réception)';
-    return t;
-  }
-  var mailed=false;
-  function mail(txt){
-    if(!MAIL||mailed)return;
-    mailed=true;
-    var f=new FormData();
-    f.append('_subject','Nouvelle commande — '+document.getElementById('nom').value.trim());
-    f.append('_template','box'); f.append('_captcha','false'); if(CC)f.append('_cc',CC);
-    f.append('Commande',txt);
-    f.append('Nom',document.getElementById('nom').value.trim());
-    f.append('Téléphone',document.getElementById('tel').value.trim());
-    fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',body:f,headers:{'Accept':'application/json'}})
-      .then(function(){var ok=document.getElementById('sent-ok');if(ok)ok.style.display='block';})
-      .catch(function(){mailed=false;});
-  }
-  document.getElementById('send-wa').addEventListener('click',function(){
-    if(!validate())return;
-    var t=orderText(); mail(t);
-    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t),'_blank');
-  });
-  document.getElementById('send-msg').addEventListener('click',function(){
-    if(!validate())return;
-    var t=orderText(); mail(t);
-    var go=function(){window.open(MSG,'_blank');};
-    if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){
-      alert('Votre commande est copiée : collez-la dans la conversation Messenger qui va s'ouvrir.');go();},go);}
-    else go();
-  });
-  document.getElementById('send-call').addEventListener('click',function(){location.href='tel:'+TEL;});
-  window.LRpaintCart();
-});
-</script>
+<script src="assets/checkout.js?v=d959274b" defer></script>
 <a class="wafloat" href="https://wa.me/21623979204?text=Bonjour%20La%20Rose%2C%20je%20souhaite%20passer%20une%20commande." target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 1c.3.1.4.2.5.3 0 .1 0 .6-.3 1.3z"/></svg></a>
 <footer class="site"><div class="wrap">
  <div class="fgrid">
@@ -254,6 +179,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div><h4>La parapharmacie</h4><ul>
     <li><a href="boutique.html">La boutique</a></li>
     <li><a href="marques.html">Nos marques</a></li>
+    <li><a href="carte-rose.html">Carte Rose (fidélité)</a></li>
     <li><a href="commander.html">Comment commander</a></li>
     <li><a href="livraison.html">Livraison & retrait</a></li>
     <li><a href="contact.html">Contact</a></li>
@@ -269,5 +195,5 @@ document.addEventListener('DOMContentLoaded',function(){
    <span>Paiement à la livraison ou en boutique · aucun paiement en ligne</span>
  </div>
 </div></footer>
-<script src="assets/site.js" defer></script>
+<script src="assets/site.js?v=d959274b" defer></script>
 </body></html>
