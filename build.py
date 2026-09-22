@@ -349,7 +349,7 @@ def build_home():
     <p style="margin:10px auto 0">Aucun paiement en ligne : vous réglez en espèces à la livraison, ou en boutique au retrait.</p></div>
   <div class="steps">
    <div class="step"><h3>Vous composez votre panier</h3><p>Parcourez le catalogue, ajoutez vos produits. Une question sur un soin ? Écrivez-nous, on vous oriente.</p></div>
-   <div class="step"><h3>Vous validez la commande</h3><p>Nom, téléphone, adresse — et c'est tout. Nous vous confirmons la disponibilité et le total par téléphone ou WhatsApp.</p></div>
+   <div class="step"><h3>Vous validez la commande</h3><p>Nom, téléphone, adresse — et c'est tout. Votre commande nous parvient immédiatement.</p></div>
    <div class="step"><h3>Vous payez à la réception</h3><p>Livraison partout en Tunisie sous {C.DELIVERY_DAYS}, paiement en espèces au livreur. Ou retrait gratuit à la parapharmacie.</p></div>
   </div>
  </div>
@@ -716,13 +716,13 @@ def build_cart():
       <textarea id="notes" name="notes" placeholder="Une précision, un conseil souhaité, un produit à commander…"></textarea></div>
 
     <div style="background:var(--petal);border-radius:14px;padding:18px 20px;font-size:14px;color:var(--ink-soft);margin-bottom:22px">
-      {ico('shield')} <strong>Votre commande n'est pas encore définitive.</strong> Nous vous rappelons pour confirmer la disponibilité, le total et le délai avant toute expédition.
+      {ico('shield')} <strong>Commande simple et sans engagement de paiement en ligne.</strong> Dès réception, nous vous contactons pour organiser la livraison ou le retrait.
     </div>
 
     <button class="btn btn-wa btn-block" id="send-wa" type="button" style="margin-bottom:12px">{WA_SVG} Envoyer la commande sur WhatsApp</button>
     <button class="btn btn-ink btn-block" id="send-msg" type="button" style="margin-bottom:12px">{FB_SVG_BTN} Envoyer sur Messenger</button>
     <button class="btn btn-line btn-block" id="send-call" type="button">{ico('phone')} Préférer un appel — {E(C.PHONE)}</button>
-    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande transmise à la parapharmacie — nous vous rappelons pour confirmer.</p>
+    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande envoyée ! Nous vous contactons très vite pour la livraison.</p>
    </form>
   </div>
 
@@ -740,7 +740,7 @@ def build_cart():
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){{
-  var R=window.LR_ROOT||'', FEE={C.DELIVERY_FEE}, FREE={C.FREE_DELIVERY_FROM}, WA="{C.WHATSAPP}", TEL="{C.PHONE_INTL}", MAIL="{C.EMAIL}", MSG="{C.MESSENGER}";
+  var R=window.LR_ROOT||'', FEE={C.DELIVERY_FEE}, FREE={C.FREE_DELIVERY_FROM}, WA="{C.WHATSAPP}", TEL="{C.PHONE_INTL}", MAIL="{C.EMAIL}", CC="{C.EMAIL_CC}", MSG="{C.MESSENGER}";
   var lines=document.getElementById('cart-lines'), sum=document.getElementById('sum'),
       form=document.getElementById('order'), empty=document.getElementById('cart-empty');
   function money(n){{return window.LRmoney(n);}}
@@ -811,7 +811,7 @@ document.addEventListener('DOMContentLoaded',function(){{
     mailed=true;
     var f=new FormData();
     f.append('_subject','Nouvelle commande — '+document.getElementById('nom').value.trim());
-    f.append('_template','box'); f.append('_captcha','false');
+    f.append('_template','box'); f.append('_captcha','false'); if(CC)f.append('_cc',CC);
     f.append('Commande',txt);
     f.append('Nom',document.getElementById('nom').value.trim());
     f.append('Téléphone',document.getElementById('tel').value.trim());
@@ -892,7 +892,7 @@ def build_static():
 <section><div class="wrap">
  <div class="steps">
   <div class="step"><h3>1 · Composez votre panier</h3><p>Ajoutez vos produits depuis le catalogue. Vous pouvez aussi nous envoyer votre liste directement sur WhatsApp — une photo d'ordonnance ou de produit suffit.</p></div>
-  <div class="step"><h3>2 · Validez vos coordonnées</h3><p>Nom, téléphone, adresse. Nous vous rappelons pour confirmer la disponibilité, le total et le délai. Rien n'est prélevé.</p></div>
+  <div class="step"><h3>2 · Validez vos coordonnées</h3><p>Nom, téléphone, adresse — c'est tout. Votre commande nous parvient immédiatement et nous vous contactons pour organiser la livraison.</p></div>
   <div class="step"><h3>3 · Payez à la réception</h3><p>En espèces au livreur à votre porte, ou en boutique si vous choisissez le retrait.</p></div>
  </div>
 </div></section>
@@ -903,7 +903,7 @@ def build_static():
   <details open><summary>Faut-il payer en ligne&nbsp;?</summary><p>Non, jamais. Aucune carte bancaire n'est demandée sur ce site. Vous réglez en espèces au moment de la livraison, ou en boutique lors du retrait.</p></details>
   <details><summary>Quels sont les délais et les frais de livraison&nbsp;?</summary><p>Nous livrons partout en Tunisie sous {C.DELIVERY_DAYS} via nos partenaires de livraison. Les frais sont de {money(C.DELIVERY_FEE)} et sont offerts à partir de {money(C.FREE_DELIVERY_FROM)} d'achat.</p></details>
   <details><summary>Puis-je récupérer ma commande en boutique&nbsp;?</summary><p>Oui, et c'est gratuit. Choisissez « retrait en boutique » au moment de valider : nous préparons votre commande et vous prévenons dès qu'elle est prête, {E(C.ADDRESS)}, {E(C.CITY)}.</p></details>
-  <details><summary>Un produit affiché est-il toujours disponible&nbsp;?</summary><p>Le catalogue suit notre stock, mais il évolue vite. Les produits marqués « sur commande » sont à nous demander — nous les faisons généralement venir en quelques jours. Nous confirmons toujours la disponibilité avant expédition.</p></details>
+  <details><summary>Un produit affiché est-il toujours disponible&nbsp;?</summary><p>Le catalogue suit notre stock, mais il évolue vite. Les produits marqués « sur commande » sont commandés pour vous et arrivent généralement en quelques jours.</p></details>
   <details><summary>Je ne trouve pas mon produit.</summary><p>Écrivez-nous sur WhatsApp au {E(C.PHONE)} avec le nom ou une photo : si nous ne l'avons pas en rayon, nous pouvons souvent le commander pour vous.</p></details>
   <details><summary>Vendez-vous des médicaments&nbsp;?</summary><p>Non. La Rose est une parapharmacie : nous proposons des produits de soin, d'hygiène, de puériculture, des compléments alimentaires et du matériel médical, sans médicaments sur ordonnance.</p></details>
   <details><summary>Puis-je avoir un conseil avant d'acheter&nbsp;?</summary><p>Bien sûr — c'est même le cœur du métier. Décrivez-nous votre peau, votre besoin ou votre routine sur WhatsApp, et nous vous orientons vers ce qui convient, sans forcément le produit le plus cher.</p></details>
@@ -930,8 +930,8 @@ def build_static():
  </ul>
  <h2>Retrait en boutique</h2>
  <p>Gratuit. Choisissez « retrait en boutique » au moment de valider votre commande : nous la préparons et vous prévenons dès qu'elle est prête. Vous réglez sur place, {E(C.ADDRESS)}, {E(C.CITY)}.</p>
- <h2>Confirmation de commande</h2>
- <p>Toute commande passée sur ce site est une <em>demande</em> : nous vous rappelons pour confirmer la disponibilité des produits, le montant total et le délai. Rien n'est expédié ni facturé avant cet échange.</p>
+ <h2>Suivi de commande</h2>
+ <p>Dès réception de votre commande, nous vous contactons par téléphone ou WhatsApp pour convenir de la livraison ou du retrait. Vous ne payez qu'à la réception.</p>
  <h2>Échange et retour</h2>
  <p>Pour des raisons d'hygiène, les produits ouverts ou descellés ne sont ni repris ni échangés. Si un article arrive abîmé ou ne correspond pas à votre commande, prévenez-nous dans les 48 h au {E(C.PHONE)} : nous le remplaçons.</p>
  <p class="muted" style="font-size:13.5px;margin-top:30px">Les tarifs et délais indiqués sont ceux en vigueur ; ils peuvent varier selon la destination et la période.</p>

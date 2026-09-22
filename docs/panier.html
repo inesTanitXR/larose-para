@@ -118,13 +118,13 @@
       <textarea id="notes" name="notes" placeholder="Une précision, un conseil souhaité, un produit à commander…"></textarea></div>
 
     <div style="background:var(--petal);border-radius:14px;padding:18px 20px;font-size:14px;color:var(--ink-soft);margin-bottom:22px">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.6-3.3 8.4-8 9-4.7-.6-8-4.4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg> <strong>Votre commande n'est pas encore définitive.</strong> Nous vous rappelons pour confirmer la disponibilité, le total et le délai avant toute expédition.
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.6-3.3 8.4-8 9-4.7-.6-8-4.4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg> <strong>Commande simple et sans engagement de paiement en ligne.</strong> Dès réception, nous vous contactons pour organiser la livraison ou le retrait.
     </div>
 
     <button class="btn btn-wa btn-block" id="send-wa" type="button" style="margin-bottom:12px"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 1c.3.1.4.2.5.3 0 .1 0 .6-.3 1.3z"/></svg> Envoyer la commande sur WhatsApp</button>
     <button class="btn btn-ink btn-block" id="send-msg" type="button" style="margin-bottom:12px"><svg viewBox="0 0 24 24" style="fill:#fff"><path d="M12 2C6.5 2 2 6.1 2 11.3c0 2.9 1.4 5.5 3.7 7.2V22l3.4-1.9c.9.3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2zm1 12.5l-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"/></svg> Envoyer sur Messenger</button>
     <button class="btn btn-line btn-block" id="send-call" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a12 12 0 006 6L16 13l5 2v4a2 2 0 01-2.2 2A17 17 0 013 5.2 2 2 0 015 3z"/></svg> Préférer un appel — 23 979 204</button>
-    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande transmise à la parapharmacie — nous vous rappelons pour confirmer.</p>
+    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande envoyée ! Nous vous contactons très vite pour la livraison.</p>
    </form>
   </div>
 
@@ -142,7 +142,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  var R=window.LR_ROOT||'', FEE=8.0, FREE=150.0, WA="21623979204", TEL="+21623979204", MAIL="fatmazangar95@gmail.com", MSG="https://m.me/61587418413300";
+  var R=window.LR_ROOT||'', FEE=8.0, FREE=150.0, WA="21623979204", TEL="+21623979204", MAIL="inessaid88@gmail.com", CC="fatmazangar95@gmail.com", MSG="https://m.me/61587418413300";
   var lines=document.getElementById('cart-lines'), sum=document.getElementById('sum'),
       form=document.getElementById('order'), empty=document.getElementById('cart-empty');
   function money(n){return window.LRmoney(n);}
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded',function(){
     mailed=true;
     var f=new FormData();
     f.append('_subject','Nouvelle commande — '+document.getElementById('nom').value.trim());
-    f.append('_template','box'); f.append('_captcha','false');
+    f.append('_template','box'); f.append('_captcha','false'); if(CC)f.append('_cc',CC);
     f.append('Commande',txt);
     f.append('Nom',document.getElementById('nom').value.trim());
     f.append('Téléphone',document.getElementById('tel').value.trim());
