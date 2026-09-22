@@ -91,6 +91,7 @@ def ico(name, cls=""):
 
 WA_SVG = ('<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 1c.3.1.4.2.5.3 0 .1 0 .6-.3 1.3z"/></svg>')
 IG_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.8s0 3.5-.1 4.8c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.5 2.2 15.1 2.2 12s0-3.5.1-4.8c0-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.5 2.2 8.9 2.2 12 2.2zm0 3.1A6.7 6.7 0 1018.7 12 6.7 6.7 0 0012 5.3zm0 11A4.3 4.3 0 1116.3 12 4.3 4.3 0 0112 16.3zM18.9 5a1.6 1.6 0 11-1.6-1.6A1.6 1.6 0 0118.9 5z"/></svg>'
+FB_SVG_BTN = '<svg viewBox="0 0 24 24" style="fill:#fff"><path d="M12 2C6.5 2 2 6.1 2 11.3c0 2.9 1.4 5.5 3.7 7.2V22l3.4-1.9c.9.3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2zm1 12.5l-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"/></svg>'
 FB_SVG = '<svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>'
 
 
@@ -425,7 +426,7 @@ def facet_html(cats, brands, subs, root):
 
 SHOP_JS = """
 <script>
-(function(){
+document.addEventListener('DOMContentLoaded',function(){
   var R=window.LR_ROOT||'', PER=48, all=[], view=[], shown=0;
   var q=new URLSearchParams(location.search);
   var box=document.getElementById('plist'), bar=document.getElementById('pcount'),
@@ -512,7 +513,7 @@ SHOP_JS = """
     var pre=q.get('sub'); if(pre&&form){form.querySelectorAll('input[name=sub]').forEach(function(i){if(i.value===pre)i.checked=true;});}
     apply();
   });
-})();
+});
 </script>"""
 
 
@@ -719,7 +720,9 @@ def build_cart():
     </div>
 
     <button class="btn btn-wa btn-block" id="send-wa" type="button" style="margin-bottom:12px">{WA_SVG} Envoyer la commande sur WhatsApp</button>
+    <button class="btn btn-ink btn-block" id="send-msg" type="button" style="margin-bottom:12px">{FB_SVG_BTN} Envoyer sur Messenger</button>
     <button class="btn btn-line btn-block" id="send-call" type="button">{ico('phone')} Préférer un appel — {E(C.PHONE)}</button>
+    <p id="sent-ok" class="muted" style="display:none;font-size:13.5px;margin-top:12px;text-align:center">✓ Commande transmise à la parapharmacie — nous vous rappelons pour confirmer.</p>
    </form>
   </div>
 
@@ -736,8 +739,8 @@ def build_cart():
 </div></section>
 
 <script>
-(function(){{
-  var R=window.LR_ROOT||'', FEE={C.DELIVERY_FEE}, FREE={C.FREE_DELIVERY_FROM}, WA="{C.WHATSAPP}", TEL="{C.PHONE_INTL}";
+document.addEventListener('DOMContentLoaded',function(){{
+  var R=window.LR_ROOT||'', FEE={C.DELIVERY_FEE}, FREE={C.FREE_DELIVERY_FROM}, WA="{C.WHATSAPP}", TEL="{C.PHONE_INTL}", MAIL="{C.EMAIL}", MSG="{C.MESSENGER}";
   var lines=document.getElementById('cart-lines'), sum=document.getElementById('sum'),
       form=document.getElementById('order'), empty=document.getElementById('cart-empty');
   function money(n){{return window.LRmoney(n);}}
@@ -802,13 +805,36 @@ def build_cart():
     t+='\\n(Paiement à la réception)';
     return t;
   }}
+  var mailed=false;
+  function mail(txt){{
+    if(!MAIL||mailed)return;
+    mailed=true;
+    var f=new FormData();
+    f.append('_subject','Nouvelle commande — '+document.getElementById('nom').value.trim());
+    f.append('_template','box'); f.append('_captcha','false');
+    f.append('Commande',txt);
+    f.append('Nom',document.getElementById('nom').value.trim());
+    f.append('Téléphone',document.getElementById('tel').value.trim());
+    fetch('https://formsubmit.co/ajax/'+MAIL,{{method:'POST',body:f,headers:{{'Accept':'application/json'}}}})
+      .then(function(){{var ok=document.getElementById('sent-ok');if(ok)ok.style.display='block';}})
+      .catch(function(){{mailed=false;}});
+  }}
   document.getElementById('send-wa').addEventListener('click',function(){{
     if(!validate())return;
-    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(orderText()),'_blank');
+    var t=orderText(); mail(t);
+    window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t),'_blank');
+  }});
+  document.getElementById('send-msg').addEventListener('click',function(){{
+    if(!validate())return;
+    var t=orderText(); mail(t);
+    var go=function(){{window.open(MSG,'_blank');}};
+    if(navigator.clipboard){{navigator.clipboard.writeText(t).then(function(){{
+      alert('Votre commande est copiée : collez-la dans la conversation Messenger qui va s\'ouvrir.');go();}},go);}}
+    else go();
   }});
   document.getElementById('send-call').addEventListener('click',function(){{location.href='tel:'+TEL;}});
   window.LRpaintCart();
-}})();
+}});
 </script>"""
     page("panier.html", "Panier", "Validez votre commande : livraison avec paiement à la livraison, ou retrait en boutique à Nabeul.", body)
 
